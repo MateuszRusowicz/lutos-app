@@ -1,3 +1,7 @@
+Lutos is an App to manage music Festivals. Primarily it's purpose is to manage multiple rehearsals in the same time and check for any mistakes in planning (double-booking) 
+as well as count the number of rehearsals of a given piece.
+*****************************
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
