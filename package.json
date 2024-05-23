@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dbInit": "node utils/dbInit.js"
   },
   "dependencies": {
     "next": "14.2.3",
@@ -19,8 +20,5 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3"
   },
-  "type": "module",
-  "scripts": {
-    "dbInit": "node utils/dbInit.js"
-  }
+  "type": "module"
 }
