@@ -1,7 +1,29 @@
+"use client";
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useState } from "react";
+import axios from "axios";
+
+let songs = {};
 
 export default function Home() {
+  const [composer, setComposer] = useState();
+  const [title, setTitle] = useState();
+  const [musicians, setMusicians] = useState();
+
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    const musiciansArr = musicians
+      .toLowerCase()
+      .trim()
+      .split(",")
+      .filter((m) => m !== "");
+    let element = { title, composer, musiciansArr };
+    console.log(element);
+    // songs.push(element);
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.center}>
@@ -14,6 +36,52 @@ export default function Home() {
         />
         <p>music management tool of new generation</p>
       </div>
+
+      <form onSubmit={handleSubmit}>
+        <h2>Insert new composition</h2>
+        <ul>
+          <li>
+            <label htmlFor="composer">Composer</label>
+            <input
+              value={composer}
+              onChange={(e) => setComposer(e.target.value)}
+              type="text"
+              id="composer"
+              name="composer"
+              placeholder="W.A. Mozart"
+              required
+            />
+          </li>
+          <li>
+            <label htmlFor="title">Title</label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              id="title"
+              name="title"
+              placeholder="String quartet"
+              required
+            />
+          </li>
+          <li>
+            <label htmlFor="musicians">Musicians</label>
+            <input
+              value={musicians}
+              onChange={(e) => setMusicians(e.target.value)}
+              type="text"
+              id="musicians"
+              name="musicians"
+              placeholder="Hans von Bulow, Joseph Joachim (coma-separated)"
+              required
+            />
+          </li>
+        </ul>
+        <p>
+          <button>Reset</button>
+          <button>Submit</button>
+        </p>
+      </form>
 
       <div className={styles.grid}>
         <a href="#" className={styles.card}>
