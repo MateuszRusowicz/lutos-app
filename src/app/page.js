@@ -2,12 +2,25 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SongsForm from "./songsForm";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
+
+  //up to date list of songs
+  const [songs, setSongs] = useState();
+
+  const fetchSongs = async function () {
+    const res = await axios.get("@/songs.js");
+    setSongs(response.data);
+  };
+
+  useEffect(() => {
+    fetchSongs();
+    console.log(songs);
+  }, [songs]);
 
   return (
     <main className={styles.main}>
@@ -27,6 +40,7 @@ export default function Home() {
         close={() => {
           setOpenModal(false);
         }}
+        updateSongs={fetchSongs}
       />
 
       <div className={styles.grid}>

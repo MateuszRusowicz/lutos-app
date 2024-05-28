@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
+import axios from "axios";
 
 let songs = [];
 
-export default function SongsForm({ open, close }) {
+export default function SongsForm({ open, close, updateSongs }) {
   const [composer, setComposer] = useState();
   const [title, setTitle] = useState();
   const [musicians, setMusicians] = useState();
 
-  // trzeba dodać mechanikę wysyłania do bazy danych i odbierania tych, co już tam są.
+  // trzeba dodać mechanikę wysyłania do bazy danych
   //trzeba dodać weryfikację wpisanych treści
-  const handleSubmit = function (e) {
+  const handleSubmit = async function (e) {
     e.preventDefault();
     const musiciansArr = musicians
       .toLowerCase()
@@ -19,9 +20,10 @@ export default function SongsForm({ open, close }) {
       .split(",")
       .filter((m) => m !== "");
 
-    let element = { title, composer, musiciansArr };
-    songs.push(element);
+    await axios.post("/api/songs.js", { title, composer, musiciansArr });
+    //fetch songs i useState
     close();
+    updateSongs();
   };
 
   return (
@@ -32,7 +34,7 @@ export default function SongsForm({ open, close }) {
       overlayClassName={styles.modalOverlay}
       className={styles.modalContent}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={() => handleSubmit(title, composer, musicians)}>
         <h2 className={styles.title}>Insert new composition</h2>
         <ul className={styles.formGroup}>
           <li>
