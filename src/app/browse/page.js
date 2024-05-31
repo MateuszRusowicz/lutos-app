@@ -1,4 +1,5 @@
 import Composition from "./composition";
+import styles from "./browse.module.css";
 
 let songs = [
   { title: "kwartet", composer: "Mozart", musicians: ["Adamina", "Mateusz"] },
@@ -9,10 +10,10 @@ let songs = [
 export default function Browse() {
   return (
     <>
-      <h1>browse</h1>
-      <main>
+      <h1 className={styles.mainH1}>Browse</h1>
+      <main className={styles.container}>
         <h2>Compositions' List</h2>
-        <ul>
+        <ul className={styles.grid}>
           {songs.map((s, i) => {
             return (
               <li key={i}>
@@ -26,7 +27,9 @@ export default function Browse() {
           })}
         </ul>
       </main>
-      <button>add a new composition</button>
+      <aside>
+        <button className={styles.buttonAdd}>add a new composition</button>
+      </aside>
     </>
   );
 }

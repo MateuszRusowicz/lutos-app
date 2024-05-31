@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SongsForm from "./songsForm";
+import Link from "next/link";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
@@ -69,7 +70,7 @@ export default function Home() {
           <p>Add new compositions to your project</p>
         </button>
 
-        <a href="#" className={styles.card}>
+        <Link href="/browse" className={styles.card}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,9 +93,9 @@ export default function Home() {
 
           <h2>Browse</h2>
           <p>Browse your compositions' list</p>
-        </a>
+        </Link>
 
-        <a href="#" className={styles.card}>
+        <Link href="/schedule" className={styles.card}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -112,7 +113,7 @@ export default function Home() {
 
           <h2>Schedule</h2>
           <p>Create your rehearsal schedule</p>
-        </a>
+        </Link>
       </div>
     </main>
   );
