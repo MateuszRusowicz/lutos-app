@@ -11,17 +11,17 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
 
   //up to date list of songs
-  const [songs, setSongs] = useState();
-
-  const fetchSongs = async function () {
-    const res = await axios.get("@/songs.js");
-    setSongs(response.data);
-  };
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
     fetchSongs();
-    console.log(songs);
-  }, [songs]);
+  }, []);
+
+  const fetchSongs = async function () {
+    const res = await axios.get("/api/songs");
+    setSongs(res.data);
+    console.log(res.data);
+  };
 
   return (
     <main className={styles.main}>
