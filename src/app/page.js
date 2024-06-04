@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import SongsForm from "./songsForm";
+import SongsForm from "./components/songsForm";
 import Link from "next/link";
 
 export default function Home() {
@@ -20,7 +20,6 @@ export default function Home() {
   const fetchSongs = async function () {
     const res = await axios.get("/api/songs");
     setSongs(res.data);
-    console.log(res.data);
   };
 
   return (

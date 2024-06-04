@@ -1,4 +1,4 @@
-import Composition from "./composition";
+import Composition from "../components/composition";
 import styles from "./browse.module.css";
 
 let songs = [
