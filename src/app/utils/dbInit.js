@@ -5,12 +5,12 @@ const dbSetup = async function () {
   await db.exec(`
   create table if not exists compositions(
     id int auto_increment primary key,
-    composer varchar(100),
-    title varchar(100)
+    composer varchar(100) not null,
+    title varchar(100) not null
   );
   create table if not exists musicians(
     id int auto_increment primary key,
-    name varchar(100)
+    name varchar(100) unique not null
   );
   create table if not exists compositions_musicians(
     composition_id int,

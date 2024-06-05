@@ -6,12 +6,10 @@ import axios from "axios";
 let songs = [];
 
 export default function SongsForm({ open, close, updateSongs }) {
-  const [composer, setComposer] = useState();
-  const [title, setTitle] = useState();
-  const [musicians, setMusicians] = useState();
+  const [composer, setComposer] = useState("");
+  const [title, setTitle] = useState("");
+  const [musicians, setMusicians] = useState("");
 
-  // trzeba dodać mechanikę wysyłania do bazy danych
-  //trzeba dodać weryfikację wpisanych treści
   const handleSubmit = async function (e) {
     e.preventDefault();
     const musiciansArr = musicians
@@ -20,7 +18,16 @@ export default function SongsForm({ open, close, updateSongs }) {
       .split(",")
       .filter((m) => m !== "");
 
-    await axios.post("/api/songs.js", { title, composer, musiciansArr });
+    try {
+      await axios.post("/api/songs", {
+        title,
+        composer,
+        musicians: musiciansArr,
+      });
+    } catch (err) {
+      console.error("error posting data", err);
+    }
+
     //fetch songs i useState
     close();
     updateSongs();
@@ -78,7 +85,9 @@ export default function SongsForm({ open, close, updateSongs }) {
           <button className={styles.closeButton} onClick={close}>
             Close
           </button>
-          <button className={styles.submitButton}>Submit</button>
+          <button type="submit" className={styles.submitButton}>
+            Submit
+          </button>
         </div>
       </form>
     </Modal>
