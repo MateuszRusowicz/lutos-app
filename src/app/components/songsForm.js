@@ -19,11 +19,12 @@ export default function SongsForm({ open, close, updateSongs }) {
       .filter((m) => m !== "");
 
     try {
-      await axios.post("/api/songs", {
+      const postedSong = await axios.post("/api/songs", {
         title,
         composer,
         musicians: musiciansArr,
       });
+      console.log("posted:", postedSong.data);
     } catch (err) {
       console.error("error posting data", err);
     }
@@ -41,7 +42,7 @@ export default function SongsForm({ open, close, updateSongs }) {
       overlayClassName={styles.modalOverlay}
       className={styles.modalContent}
     >
-      <form onSubmit={() => handleSubmit(title, composer, musicians)}>
+      <form onSubmit={handleSubmit}>
         <h2 className={styles.title}>Insert new composition</h2>
         <ul className={styles.formGroup}>
           <li>

@@ -30,7 +30,9 @@ export async function POST(req) {
 
 export async function GET() {
   const db = await openDb();
-  const songs = await db.all("select * from compositions");
+  const songs = await db.all(
+    "select title, composer, group_concat(musicians.name, ', ') as musicians from compositions join compositions_musicians on compositions.id=compositions_musicians.composition_id join musicians on compositions_musicians.musician_id=musicians.id group by compositions.id;"
+  );
 
   return NextResponse.json(songs);
 }

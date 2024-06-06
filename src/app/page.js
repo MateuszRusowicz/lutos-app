@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import SongsForm from "./components/songsForm";
 import Link from "next/link";
+import Composition from "./components/composition";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
@@ -18,10 +19,13 @@ export default function Home() {
   }, []);
 
   const fetchSongs = async function () {
-    const res = await axios.get("/api/songs");
-    setSongs(res.data);
-    console.log(res.data);
-    console.log(songs);
+    try {
+      const res = await axios.get("/api/songs");
+      setSongs(res.data);
+      console.log("fetched songs", res.data);
+    } catch (error) {
+      console.error("error fetching songs:", error);
+    }
   };
 
   return (
@@ -91,6 +95,17 @@ export default function Home() {
           <p>Create your rehearsal schedule</p>
         </Link>
       </div>
+      {songs.map((s, index) => {
+        console.log(s);
+        return (
+          <Composition
+            key={index}
+            title={s.title}
+            composer={s.composer}
+            musicians={s.musicians}
+          />
+        );
+      })}
     </main>
   );
 }
