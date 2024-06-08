@@ -22,7 +22,6 @@ export default function Home() {
     try {
       const res = await axios.get("/api/songs");
       setSongs(res.data);
-      console.log("fetched songs", res.data);
     } catch (error) {
       console.error("error fetching songs:", error);
     }
