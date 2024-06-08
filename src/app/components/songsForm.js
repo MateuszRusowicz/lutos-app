@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
+import axios from "axios";
 
 let songs = [];
 
-export default function SongsForm({ open, close }) {
-  const [composer, setComposer] = useState();
-  const [title, setTitle] = useState();
-  const [musicians, setMusicians] = useState();
+export default function SongsForm({ open, close, updateSongs }) {
+  const [composer, setComposer] = useState("");
+  const [title, setTitle] = useState("");
+  const [musicians, setMusicians] = useState("");
 
-  // trzeba dodać mechanikę wysyłania do bazy danych i odbierania tych, co już tam są.
-  //trzeba dodać weryfikację wpisanych treści
-  const handleSubmit = function (e) {
+  const handleSubmit = async function (e) {
     e.preventDefault();
     const musiciansArr = musicians
       .toLowerCase()
@@ -19,9 +18,20 @@ export default function SongsForm({ open, close }) {
       .split(",")
       .filter((m) => m !== "");
 
-    let element = { title, composer, musiciansArr };
-    songs.push(element);
+    try {
+      const postedSong = await axios.post("/api/songs", {
+        title,
+        composer,
+        musicians: musiciansArr,
+      });
+      console.log("posted:", postedSong.data);
+    } catch (err) {
+      console.error("error posting data", err);
+    }
+
+    //fetch songs i useState
     close();
+    updateSongs();
   };
 
   return (
@@ -76,7 +86,9 @@ export default function SongsForm({ open, close }) {
           <button className={styles.closeButton} onClick={close}>
             Close
           </button>
-          <button className={styles.submitButton}>Submit</button>
+          <button type="submit" className={styles.submitButton}>
+            Submit
+          </button>
         </div>
       </form>
     </Modal>

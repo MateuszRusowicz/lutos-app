@@ -9,7 +9,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(25%, auto));
+  grid-template-columns: repeat(2, minmax(50%, auto));
   max-width: 100%;
   width: var(--max-width);
   justify-items: center;
@@ -17,6 +17,7 @@
 
 .card {
   padding: 1rem 1.2rem;
+  margin-bottom: 3rem;
   text-align: center;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);

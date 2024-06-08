@@ -10,6 +10,7 @@
     "dbInit": "node utils/dbInit.js"
   },
   "dependencies": {
+    "antd": "^5.18.0",
     "axios": "^1.7.2",
     "next": "14.2.3",
     "react": "^18",
@@ -20,6 +21,8 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/node": "20.14.2",
+    "@types/react": "18.3.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.3"
   },
