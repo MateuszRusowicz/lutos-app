@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
 import axios from "axios";
+import { updateSongs } from "./context-hook/useSongsState";
 
-let songs = [];
-
-export default function SongsForm({ open, close, updateSongs }) {
+export default function SongsForm({ open, close }) {
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
