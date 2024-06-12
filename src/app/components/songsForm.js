@@ -2,12 +2,13 @@ import { useState } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
 import axios from "axios";
-import { updateSongs } from "./context-hook/useSongsState";
+import { useSongsState } from "../context-hook/useSongsState";
 
 export default function SongsForm({ open, close }) {
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
+  const { songs, setSongs, fetchSongs } = useSongsState();
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -30,7 +31,7 @@ export default function SongsForm({ open, close }) {
 
     //fetch songs i useState
     close();
-    updateSongs();
+    fetchSongs();
   };
 
   return (

@@ -2,31 +2,15 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-import { songs } from "./context-hook/useSongsState";
+import { useState } from "react";
+import { useSongsState } from "./context-hook/useSongsState";
 import SongsForm from "./components/songsForm";
 import Link from "next/link";
 import Composition from "./components/composition";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-
-  //up to date list of songs
-  // const [songs, setSongs] = useState([]);
-
-  // useEffect(() => {
-  //   fetchSongs();
-  // }, []);
-
-  // const fetchSongs = async function () {
-  //   try {
-  //     const res = await axios.get("/api/songs");
-  //     setSongs(res.data);
-  //   } catch (error) {
-  //     console.error("error fetching songs:", error);
-  //   }
-  // };
+  const { songs, setSongs, fetchSongs } = useSongsState();
 
   return (
     <main className={styles.main}>
@@ -94,17 +78,18 @@ export default function Home() {
           <p>Create your rehearsal schedule</p>
         </Link>
       </div>
-      {songs.map((s, index) => {
-        console.log(s);
-        return (
-          <Composition
-            key={index}
-            title={s.title}
-            composer={s.composer}
-            musicians={s.musicians}
-          />
-        );
-      })}
+      {songs &&
+        songs.map((s, index) => {
+          console.log(s);
+          return (
+            <Composition
+              key={index}
+              title={s.title}
+              composer={s.composer}
+              musicians={s.musicians}
+            />
+          );
+        })}
     </main>
   );
 }
