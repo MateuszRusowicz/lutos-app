@@ -8,6 +8,7 @@ I have deliberately decided to make some moves to show versatile knowledge and p
 - using predefined Ant Dev component for menu;
 - using axios for asyncronous code and better error handling;
 - basic CSS styles come from default Next Js settings crafted for the need of this project. I used chatGPT to generate simmilar CSS for other components and then adjusted it to match the overall experience.
+- using context to provide multiple components with data from db by custom hook that shares the state
 
 
 *****************************
