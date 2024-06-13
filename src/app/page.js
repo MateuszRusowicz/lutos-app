@@ -7,10 +7,13 @@ import { useSongsState } from "./context-hook/useSongsState";
 import SongsForm from "./components/songsForm";
 import Link from "next/link";
 import Composition from "./components/composition";
+import axios from "axios";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-  const { songs, setSongs, fetchSongs } = useSongsState();
+  const { songs, fetchSongs } = useSongsState();
+
+  const handleDeleteSong = async function (id) {};
 
   return (
     <main className={styles.main}>
@@ -79,15 +82,18 @@ export default function Home() {
         </Link>
       </div>
       {songs &&
-        songs.map((s, index) => {
+        songs.map((s) => {
           console.log(s);
           return (
-            <Composition
-              key={index}
-              title={s.title}
-              composer={s.composer}
-              musicians={s.musicians}
-            />
+            <>
+              <Composition
+                key={s.id}
+                title={s.title}
+                composer={s.composer}
+                musicians={s.musicians}
+              />
+              <button onClick={() => handleDeleteSong(id)}>delete</button>
+            </>
           );
         })}
     </main>
