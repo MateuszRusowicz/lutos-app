@@ -34,7 +34,7 @@ export async function POST(req) {
 export async function GET() {
   const db = await openDb();
   const songs = await db.all(
-    "select composition.id as id title, composer, group_concat(musicians.name, ', ') as musicians from compositions join compositions_musicians on compositions.id=compositions_musicians.composition_id join musicians on compositions_musicians.musician_id=musicians.id group by compositions.id;"
+    "select compositions.id as id, title, composer, group_concat(musicians.name, ', ') as musicians from compositions join compositions_musicians on compositions.id=compositions_musicians.composition_id join musicians on compositions_musicians.musician_id=musicians.id group by compositions.id;"
   );
 
   return NextResponse.json(songs);
@@ -44,8 +44,8 @@ export async function DELETE(req) {
   const db = await openDb();
   const { id } = await req.json();
 
-  await db.run("delete from compositions where id=?", [id]);
-  await db.run("delete from compositions_musicians where composition_id=?", [
+  await db.run("delete from compositions where id = ?", [id]);
+  await db.run("delete from compositions_musicians where composition_id = ?", [
     id,
   ]);
 

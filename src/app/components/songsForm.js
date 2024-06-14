@@ -8,7 +8,7 @@ export default function SongsForm({ open, close }) {
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
-  const { songs, setSongs, fetchSongs } = useSongsState();
+  const { fetchSongs } = useSongsState();
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -32,6 +32,9 @@ export default function SongsForm({ open, close }) {
     //fetch songs i useState
     close();
     fetchSongs();
+    setComposer("");
+    setTitle("");
+    setMusicians("");
   };
 
   return (

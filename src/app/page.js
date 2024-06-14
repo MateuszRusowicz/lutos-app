@@ -13,7 +13,15 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const { songs, fetchSongs } = useSongsState();
 
-  const handleDeleteSong = async function (id) {};
+  const handleDeleteSong = async function (id) {
+    try {
+      const deletedSong = await axios.delete("/api/songs", { data: { id } });
+      if (deletedSong.status === 200) fetchSongs();
+      return console.log("deleted", deletedSong.data);
+    } catch (err) {
+      console.error("error deleting song:", err);
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -92,7 +100,7 @@ export default function Home() {
                 composer={s.composer}
                 musicians={s.musicians}
               />
-              <button onClick={() => handleDeleteSong(id)}>delete</button>
+              <button onClick={() => handleDeleteSong(s.id)}>delete</button>
             </>
           );
         })}
