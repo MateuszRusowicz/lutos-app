@@ -100,7 +100,12 @@ export default function Home() {
                 composer={s.composer}
                 musicians={s.musicians}
               />
-              <button onClick={() => handleDeleteSong(s.id)}>delete</button>
+              <button
+                className={styles.btn}
+                onClick={() => handleDeleteSong(s.id)}
+              >
+                delete
+              </button>
             </>
           );
         })}
