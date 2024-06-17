@@ -10,7 +10,7 @@ export const useSongsState = () => {
 };
 
 export const SongsContextProvider = ({ children }) => {
-  const [songs, setSongs] = useState();
+  const [songs, setSongs] = useState([]);
 
   const fetchSongs = async function () {
     try {
