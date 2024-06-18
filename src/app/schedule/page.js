@@ -7,7 +7,10 @@ export default function Schedule() {
   const { songs } = useSongsState();
   const [pickedSongs, setPickedSongs] = useState([]);
 
-  const handleAdd = function (id) {
+  const handleAdd = function (id, index) {
+    const musiciansArr = songs[index].musicians.split(",").map((e) => e.trim());
+
+    // for(m of musiciansArr){if(songs.musicians.includes(m))}
     setPickedSongs((prev) => [...prev, id]);
   };
 
@@ -42,11 +45,11 @@ export default function Schedule() {
         <div>
           <h2>available works</h2>
           <ul>
-            {songs.map((s) => {
+            {songs.map((s, index) => {
               if (!pickedSongs.includes(s.id)) {
                 return (
                   <li key={s.id}>
-                    <button onClick={() => handleAdd(s.id)}>
+                    <button onClick={() => handleAdd(s.id, index)}>
                       <Composition
                         title={s.title}
                         composer={s.composer}
