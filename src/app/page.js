@@ -91,7 +91,6 @@ export default function Home() {
       </div>
       {songs &&
         songs.map((s) => {
-          console.log(s);
           return (
             <>
               <Composition

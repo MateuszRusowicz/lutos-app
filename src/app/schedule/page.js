@@ -8,10 +8,31 @@ export default function Schedule() {
   const [pickedSongs, setPickedSongs] = useState([]);
 
   const handleAdd = function (id, index) {
-    const musiciansArr = songs[index].musicians.split(",").map((e) => e.trim());
+    const musiciansArr = songs[index].musicians
+      .toLowerCase()
+      .split(",")
+      .map((e) => e.trim());
 
-    // for(m of musiciansArr){if(songs.musicians.includes(m))}
-    setPickedSongs((prev) => [...prev, id]);
+    let musicianAlreadyChosen = false;
+
+    musiciansArr.some((m) => {
+      for (let i = 0; i < songs.length; i++) {
+        if (pickedSongs.includes(songs[i].id)) {
+          const musiciansToCheckArr = songs[i].musicians
+            .toLowerCase()
+            .split(",")
+            .map((e) => e.trim());
+
+          if (musiciansToCheckArr.some((e) => e === m))
+            musicianAlreadyChosen = true;
+          return true;
+        }
+      }
+    });
+
+    musicianAlreadyChosen
+      ? console.log("error:musician already chosen")
+      : setPickedSongs((prev) => [...prev, id]);
   };
 
   const handleRemove = function (id) {

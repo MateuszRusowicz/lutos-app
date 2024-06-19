@@ -8,7 +8,7 @@ import { Menu } from "antd";
 
 const items = [
   {
-    label: <a href="#">Home Page</a>,
+    label: <a href="/">Home Page</a>,
     key: "home",
     icon: <HomeOutlined />,
   },
