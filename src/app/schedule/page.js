@@ -2,6 +2,7 @@
 import Composition from "../components/composition";
 import { useSongsState } from "../context-hook/useSongsState.js";
 import { useState } from "react";
+import styles from "./schedule.module.css";
 
 export default function Schedule() {
   const { songs } = useSongsState();
@@ -41,16 +42,19 @@ export default function Schedule() {
 
   return (
     <>
-      <h1>schedule</h1>
-      <main>
-        <div>
+      <h1 className={styles.scheduleHeader}>Schedule</h1>
+      <main className={styles.scheduleMain}>
+        <div className={styles.scheduleSection}>
           <h2>selected works</h2>
           <ul>
             {songs.map((s) => {
               if (pickedSongs.includes(s.id)) {
                 return (
                   <li key={s.id}>
-                    <button onClick={() => handleRemove(s.id)}>
+                    <button
+                      onClick={() => handleRemove(s.id)}
+                      className={styles.scheduleButton}
+                    >
                       <Composition
                         title={s.title}
                         composer={s.composer}
@@ -63,14 +67,17 @@ export default function Schedule() {
             })}
           </ul>
         </div>
-        <div>
+        <div className={styles.scheduleSection}>
           <h2>available works</h2>
           <ul>
             {songs.map((s, index) => {
               if (!pickedSongs.includes(s.id)) {
                 return (
                   <li key={s.id}>
-                    <button onClick={() => handleAdd(s.id, index)}>
+                    <button
+                      onClick={() => handleAdd(s.id, index)}
+                      className={styles.scheduleButton}
+                    >
                       <Composition
                         title={s.title}
                         composer={s.composer}
@@ -84,7 +91,7 @@ export default function Schedule() {
           </ul>
         </div>
       </main>
-      <aside>
+      <aside className={styles.scheduleAside}>
         <h2>fitting works</h2>
         <ul>
           <li></li>

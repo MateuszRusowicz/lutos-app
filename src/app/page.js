@@ -89,25 +89,29 @@ export default function Home() {
           <p>Create your rehearsal schedule</p>
         </Link>
       </div>
-      {songs &&
-        songs.map((s) => {
-          return (
-            <>
-              <Composition
-                key={s.id}
-                title={s.title}
-                composer={s.composer}
-                musicians={s.musicians}
-              />
-              <button
-                className={styles.btn}
-                onClick={() => handleDeleteSong(s.id)}
-              >
-                delete
-              </button>
-            </>
-          );
-        })}
+      <h2 className={styles.compositionTitle}>
+        {songs && "Compositions in Database"}
+      </h2>
+      <div className={styles.songsGrid}>
+        {songs &&
+          songs.map((s) => {
+            return (
+              <div key={s.id} className={styles.compositionDiv}>
+                <Composition
+                  title={s.title}
+                  composer={s.composer}
+                  musicians={s.musicians}
+                />
+                <button
+                  className={styles.btn}
+                  onClick={() => handleDeleteSong(s.id)}
+                >
+                  delete
+                </button>
+              </div>
+            );
+          })}
+      </div>
     </main>
   );
 }

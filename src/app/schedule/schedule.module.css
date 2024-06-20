@@ -1,0 +1,129 @@
+/* Page layout */
+.scheduleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.scheduleHeader {
+  font-size: 2rem;
+  margin: 2rem;
+  color: rgb(var(--foreground-rgb));
+  text-align: center;
+}
+
+/* Main content */
+.scheduleMain {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: var(--max-width);
+  gap: 2rem;
+  position: relative;
+}
+
+/* Sections */
+.scheduleSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scheduleSection h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: rgb(var(--foreground-rgb));
+  text-align: center;
+}
+
+.scheduleSection ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scheduleSection li {
+  margin-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Buttons */
+.scheduleButton {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background: rgba(var(--card-rgb), 0.7);
+  transition: background 200ms, transform 200ms, box-shadow 200ms;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1),
+    0 1px 3px rgba(255, 255, 255, 0.08);
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.scheduleButton:hover {
+  transform: scale(1.05);
+  background: rgba(var(--card-rgb), 0.85);
+  box-shadow: 0 6px 8px rgba(255, 255, 255, 0.2),
+    0 3px 6px rgba(255, 255, 255, 0.15);
+}
+
+.scheduleButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.4);
+}
+
+/* Aside */
+.scheduleAside {
+  margin-top: 7rem;
+  width: 300px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(var(--background-start-rgb), 0.9);
+  box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.scheduleAside h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: rgb(var(--foreground-rgb));
+}
+
+.scheduleAside ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scheduleAside li {
+  margin-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Grid for compositions */
+.songsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 1rem;
+  max-width: 100%;
+  width: var(--max-width);
+  justify-items: center;
+}
