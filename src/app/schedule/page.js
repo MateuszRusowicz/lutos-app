@@ -44,7 +44,7 @@ export default function Schedule() {
     <>
       <h1 className={styles.scheduleHeader}>Schedule</h1>
       <main className={styles.scheduleMain}>
-        <div className={styles.scheduleSection}>
+        <div className={`${styles.scheduleSection} ${styles.selectedSection}`}>
           <h2>selected works</h2>
           <ul>
             {songs.map((s) => {

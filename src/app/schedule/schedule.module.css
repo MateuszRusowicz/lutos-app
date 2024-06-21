@@ -17,8 +17,8 @@
 .scheduleMain {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
-  max-width: var(--max-width);
   gap: 2rem;
   position: relative;
 }
@@ -29,6 +29,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 250px;
+}
+
+.selectedSection {
+  border-bottom: 1px solid white;
 }
 
 .scheduleSection h2 {
@@ -95,6 +100,7 @@
   box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
   height: 100vh;
   overflow-y: auto;
+  border-left: 1px solid white;
 }
 
 .scheduleAside h2 {
