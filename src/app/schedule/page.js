@@ -51,16 +51,12 @@ export default function Schedule() {
               if (pickedSongs.includes(s.id)) {
                 return (
                   <li key={s.id}>
-                    <button
-                      onClick={() => handleRemove(s.id)}
-                      className={styles.scheduleButton}
-                    >
-                      <Composition
-                        title={s.title}
-                        composer={s.composer}
-                        musicians={s.musicians}
-                      />
-                    </button>
+                    <Composition
+                      onSelect={() => handleRemove(s.id)}
+                      title={s.title}
+                      composer={s.composer}
+                      musicians={s.musicians}
+                    />
                   </li>
                 );
               }
@@ -74,16 +70,12 @@ export default function Schedule() {
               if (!pickedSongs.includes(s.id)) {
                 return (
                   <li key={s.id}>
-                    <button
-                      onClick={() => handleAdd(s.id, index)}
-                      className={styles.scheduleButton}
-                    >
-                      <Composition
-                        title={s.title}
-                        composer={s.composer}
-                        musicians={s.musicians}
-                      />
-                    </button>
+                    <Composition
+                      onSelect={() => handleAdd(s.id, index)}
+                      title={s.title}
+                      composer={s.composer}
+                      musicians={s.musicians}
+                    />
                   </li>
                 );
               }

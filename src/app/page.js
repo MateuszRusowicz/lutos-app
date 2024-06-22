@@ -14,6 +14,13 @@ export default function Home() {
   const { songs, fetchSongs } = useSongsState();
 
   const handleDeleteSong = async function (id) {
+    const isConfirmed = confirm(
+      "This will delete the song from database. Are you sure you want to continue?"
+    );
+    if (!isConfirmed) {
+      return;
+    }
+
     try {
       const deletedSong = await axios.delete("/api/songs", { data: { id } });
       if (deletedSong.status === 200) fetchSongs();
@@ -90,7 +97,7 @@ export default function Home() {
         </Link>
       </div>
       <h2 className={styles.compositionTitle}>
-        {songs && "Compositions in Database"}
+        {songs.length !== 0 && "Compositions in Database"}
       </h2>
       <div className={styles.songsGrid}>
         {songs &&
@@ -98,16 +105,11 @@ export default function Home() {
             return (
               <div key={s.id} className={styles.compositionDiv}>
                 <Composition
+                  onSelect={() => handleDeleteSong(s.id)}
                   title={s.title}
                   composer={s.composer}
                   musicians={s.musicians}
                 />
-                <button
-                  className={styles.btn}
-                  onClick={() => handleDeleteSong(s.id)}
-                >
-                  delete
-                </button>
               </div>
             );
           })}

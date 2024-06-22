@@ -16,9 +16,10 @@ export async function POST(req) {
       "INSERT INTO musicians (name) VALUES (?) ON CONFLICT(name) DO NOTHING",
       [musician]
     );
-    const musicianId =
-      musiciansResult.lastID ||
-      (await db.get("SELECT id FROM musicians WHERE name = ?", [musician])).id;
+    const musicianId = (
+      await db.get("SELECT id FROM musicians WHERE name = ?", [musician])
+    ).id;
+
     await db.run(
       "INSERT INTO compositions_musicians (composition_id, musician_id) VALUES (?, ?)",
       [compositionId, musicianId]
