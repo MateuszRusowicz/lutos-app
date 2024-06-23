@@ -19,10 +19,19 @@
     )
     rgb(var(--background-start-rgb));
   padding: 2rem;
+  border: 1px solid white;
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 500px;
+}
+
+.modalContent svg {
+  max-width: 70px;
+}
+
+.modalContent h3 {
+  font-size: 3rem;
 }
 
 .title {
