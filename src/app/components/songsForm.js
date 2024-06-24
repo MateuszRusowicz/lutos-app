@@ -31,7 +31,7 @@ export default function SongsForm({ open, close }) {
       console.log("posted:", postedSong.data);
 
       setConfirmationModal(true);
-      setTimeout(() => setConfirmationModal(false), 1500);
+      setTimeout(() => setConfirmationModal(false), 500);
     } catch (err) {
       console.error("error posting data", err);
     }

@@ -7,6 +7,7 @@ import styles from "./schedule.module.css";
 export default function Schedule() {
   const { songs } = useSongsState();
   const [pickedSongs, setPickedSongs] = useState([]);
+  const [clashing, setClashing] = useState(false);
 
   const handleAdd = function (id, index) {
     const musiciansArr = songs[index].musicians
@@ -15,6 +16,7 @@ export default function Schedule() {
       .map((e) => e.trim());
 
     let musicianAlreadyChosen = false;
+    let clashingSong = null;
 
     musiciansArr.some((m) => {
       for (let i = 0; i < songs.length; i++) {
@@ -24,16 +26,22 @@ export default function Schedule() {
             .split(",")
             .map((e) => e.trim());
 
-          if (musiciansToCheckArr.some((e) => e === m))
+          if (musiciansToCheckArr.some((e) => e === m)) {
             musicianAlreadyChosen = true;
-          return true;
+            clashingSong = songs[i].id;
+            break;
+          }
         }
       }
     });
 
-    musicianAlreadyChosen
-      ? console.log("error:musician already chosen")
-      : setPickedSongs((prev) => [...prev, id]);
+    if (musicianAlreadyChosen) {
+      console.log("error: musician already chosen");
+      setClashing(clashingSong);
+      setTimeout(() => setClashing(null), 200);
+    } else {
+      setPickedSongs((prev) => [...prev, id]);
+    }
   };
 
   const handleRemove = function (id) {
@@ -50,7 +58,10 @@ export default function Schedule() {
             {songs.map((s) => {
               if (pickedSongs.includes(s.id)) {
                 return (
-                  <li key={s.id}>
+                  <li
+                    key={s.id}
+                    className={s.id === clashing ? styles.nameClash : ""}
+                  >
                     <Composition
                       onSelect={() => handleRemove(s.id)}
                       title={s.title}
