@@ -94,12 +94,6 @@ export default function Schedule() {
           </ul>
         </div>
       </main>
-      <aside className={styles.scheduleAside}>
-        <h2>fitting works</h2>
-        <ul>
-          <li></li>
-        </ul>
-      </aside>
     </>
   );
 }
