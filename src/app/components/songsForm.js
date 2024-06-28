@@ -3,6 +3,12 @@ import Modal from "react-modal";
 import styles from "./songsForm.module.css";
 import axios from "axios";
 import { useSongsState } from "../context-hook/useSongsState";
+import {
+  SpinnerIcon,
+  ConfirmIcon,
+  ErrorIcon,
+} from "../../../public/images/svgs";
+import asyncProcessModal from "../components/asyncProcessModal";
 
 export default function SongsForm({ open, close }) {
   //state for each input and custom hook from context api
@@ -10,7 +16,11 @@ export default function SongsForm({ open, close }) {
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
   const { fetchSongs } = useSongsState();
-  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [processModal, setProcessModal] = useState({
+    open: false,
+    status: null,
+    message: "",
+  });
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -21,19 +31,32 @@ export default function SongsForm({ open, close }) {
       .filter((m) => m !== "");
 
     //render spinner add
-
+    setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       const postedSong = await axios.post("/api/songs", {
         title,
         composer,
         musicians: musiciansArr,
       });
-      console.log("posted:", postedSong.data);
-
-      setConfirmationModal(true);
-      setTimeout(() => setConfirmationModal(false), 500);
+      setProcessModal({
+        open: true,
+        status: 200,
+        message: "Successfully added to database",
+      });
+      setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        5000
+      );
     } catch (err) {
-      console.error("error posting data", err);
+      setProcessModal({
+        open: true,
+        status: 500,
+        message: `Error posting data: ${err}`,
+      });
+      setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        1000
+      );
     }
     //fetch songs i reset input state
     close();
@@ -103,30 +126,27 @@ export default function SongsForm({ open, close }) {
           </div>
         </form>
       </Modal>
-      {confirmationModal && (
-        <Modal
-          isOpen={confirmationModal}
-          appElement={document.getElementById("root")}
-          overlayClassName={styles.modalOverlay}
-          className={styles.modalContent}
-        >
-          <h3>Successfully added to database</h3>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-        </Modal>
-      )}
+      {/* ------------------- RENDER FETCH STATUS: SPINNER/SUCCESS/ERROR------------------------------ */}
+      <Modal
+        isOpen={processModal.open}
+        appElement={document.getElementById("root")}
+        overlayClassName={styles.modalOverlay}
+        className={styles.modalContent}
+      >
+        {processModal.status === 200 ? (
+          <>
+            <h3>{processModal.message}</h3>
+            <ConfirmIcon />
+          </>
+        ) : processModal.status === 500 ? (
+          <>
+            <h3>{processModal.message}</h3>
+            <ErrorIcon />
+          </>
+        ) : (
+          <SpinnerIcon />
+        )}
+      </Modal>
     </>
   );
 }
