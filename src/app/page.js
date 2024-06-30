@@ -32,6 +32,12 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (setOpenModal && asideScrollRef.current) {
+      asideScrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [openModal]);
+
   return (
     <>
       <main className={styles.main}>
