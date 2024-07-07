@@ -15,6 +15,7 @@ export default function Home() {
   const { songs, fetchSongs } = useSongsState();
   const asideScrollRef = useRef(null);
 
+  // -------------------------HANDLING DELETE SONG FROM DB ----------------------------
   const handleDeleteSong = async function (id) {
     const isConfirmed = confirm(
       "This will delete the song from database. Are you sure you want to continue?"
@@ -32,6 +33,7 @@ export default function Home() {
     }
   };
 
+  // ----------------------- SCROLLING COMPOSITIONS LIST INTO VIEW WHEN ADDING NEW COMPOSITON-------------------------
   useEffect(() => {
     if (setOpenModal && asideScrollRef.current) {
       asideScrollRef.current.scrollIntoView({ behavior: "smooth" });
