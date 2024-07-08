@@ -18,6 +18,7 @@ export default function Schedule() {
     let musicianAlreadyChosen = false;
     let clashingSong = null;
 
+    // CHECKS IF MUSICIANS HAVE BEEN ALREADY CHOSEN
     musiciansArr.some((m) => {
       for (let i = 0; i < songs.length; i++) {
         if (pickedSongs.includes(songs[i].id)) {
@@ -60,7 +61,7 @@ export default function Schedule() {
                 return (
                   <li
                     key={s.id}
-                    className={s.id === clashing ? styles.nameClash : ""}
+                    className={s.id === clashing ? styles.nameClash : ""} // if the song is clashing if will turn red for a while
                   >
                     <Composition
                       onSelect={() => handleRemove(s.id)}
