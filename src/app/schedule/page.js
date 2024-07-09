@@ -37,7 +37,6 @@ export default function Schedule() {
     });
 
     if (musicianAlreadyChosen) {
-      console.log("error: musician already chosen");
       setClashing(clashingSong);
       setTimeout(() => setClashing(null), 200);
     } else {
