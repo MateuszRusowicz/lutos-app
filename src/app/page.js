@@ -27,7 +27,7 @@ export default function Home() {
     try {
       const deletedSong = await axios.delete("/api/songs", { data: { id } });
       if (deletedSong.status === 200) fetchSongs();
-      return console.log("deleted", deletedSong.data);
+      return console.log("deleted", deletedSong.data); //-------------------DODAJ ERROR HANDLING PRZY USUWANIU PIOSENKI
     } catch (err) {
       console.error("error deleting song:", err);
     }
@@ -35,7 +35,7 @@ export default function Home() {
 
   // ----------------------- SCROLLING COMPOSITIONS LIST INTO VIEW WHEN ADDING NEW COMPOSITON-------------------------
   useEffect(() => {
-    if (setOpenModal && asideScrollRef.current) {
+    if (openModal && asideScrollRef.current) {
       asideScrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [openModal]);
@@ -61,7 +61,7 @@ export default function Home() {
             setOpenModal(false);
           }}
         />
-
+        {/* ---------------------- Buttons ----------------------------------------------- */}
         <div className={styles.grid}>
           <button
             onClick={() => {
@@ -81,7 +81,7 @@ export default function Home() {
           </Link>
         </div>
       </main>
-      {/* -------------------  COMPOSITIONS LIST --------------------------------- */}
+      {/* -------------------  COMPOSITIONS LIST FROM DB --------------------------------- */}
       <aside className={styles.aside} ref={asideScrollRef}>
         <h2 className={styles.compositionTitle}>
           {songs.length !== 0 && "Compositions in Database"}

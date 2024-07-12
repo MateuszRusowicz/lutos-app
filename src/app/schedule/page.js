@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "./schedule.module.css";
 
 export default function Schedule() {
-  const { songs } = useSongsState();
+  const { songs, authState } = useSongsState();
   const [pickedSongs, setPickedSongs] = useState([]);
   const [clashing, setClashing] = useState(false);
 
@@ -47,53 +47,57 @@ export default function Schedule() {
   const handleRemove = function (id) {
     setPickedSongs((prev) => prev.filter((songId) => songId !== id));
   };
-
-  return (
-    <>
-      <h1 className={styles.scheduleHeader}>Schedule</h1>
-      <main className={styles.scheduleMain}>
-        <div className={`${styles.scheduleSection} ${styles.selectedSection}`}>
-          <h2>selected works</h2>
-          <ul>
-            {songs.map((s) => {
-              if (pickedSongs.includes(s.id)) {
-                return (
-                  <li
-                    key={s.id}
-                    className={s.id === clashing ? styles.nameClash : ""} // if the song is clashing if will turn red for a while
-                  >
-                    <Composition
-                      onSelect={() => handleRemove(s.id)}
-                      title={s.title}
-                      composer={s.composer}
-                      musicians={s.musicians}
-                    />
-                  </li>
-                );
-              }
-            })}
-          </ul>
-        </div>
-        <div className={styles.scheduleSection}>
-          <h2>available works</h2>
-          <ul>
-            {songs.map((s, index) => {
-              if (!pickedSongs.includes(s.id)) {
-                return (
-                  <li key={s.id}>
-                    <Composition
-                      onSelect={() => handleAdd(s.id, index)}
-                      title={s.title}
-                      composer={s.composer}
-                      musicians={s.musicians}
-                    />
-                  </li>
-                );
-              }
-            })}
-          </ul>
-        </div>
-      </main>
-    </>
-  );
+  if (authState === "loading") return <>Loading</>;
+  else if (authState === "unathenticated") return <>Sign in</>;
+  else if (authState === "authenticated")
+    return (
+      <>
+        <h1 className={styles.scheduleHeader}>Schedule</h1>
+        <main className={styles.scheduleMain}>
+          <div
+            className={`${styles.scheduleSection} ${styles.selectedSection}`}
+          >
+            <h2>selected works</h2>
+            <ul>
+              {songs.map((s) => {
+                if (pickedSongs.includes(s.id)) {
+                  return (
+                    <li
+                      key={s.id}
+                      className={s.id === clashing ? styles.nameClash : ""} // if the song is clashing if will turn red for a while
+                    >
+                      <Composition
+                        onSelect={() => handleRemove(s.id)}
+                        title={s.title}
+                        composer={s.composer}
+                        musicians={s.musicians}
+                      />
+                    </li>
+                  );
+                }
+              })}
+            </ul>
+          </div>
+          <div className={styles.scheduleSection}>
+            <h2>available works</h2>
+            <ul>
+              {songs.map((s, index) => {
+                if (!pickedSongs.includes(s.id)) {
+                  return (
+                    <li key={s.id}>
+                      <Composition
+                        onSelect={() => handleAdd(s.id, index)}
+                        title={s.title}
+                        composer={s.composer}
+                        musicians={s.musicians}
+                      />
+                    </li>
+                  );
+                }
+              })}
+            </ul>
+          </div>
+        </main>
+      </>
+    );
 }
