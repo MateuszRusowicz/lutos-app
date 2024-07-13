@@ -11,7 +11,7 @@ export const useSongsState = () => {
 
 export const SongsContextProvider = ({ children }) => {
   const [songs, setSongs] = useState([]); // w zasadzie to nigdzie nie używam setSongs bo idą bezpośrednio z DB i używam fetch songs, ale chyba potrzebuję to use State, co?
-  const [authState, setAuthState] = useState("unathenticated"); // loading, authenticated
+  const [authState, setAuthState] = useState("unathenticated"); // loading, authenticated, id!!!
   const fetchSongs = async function () {
     try {
       const res = await axios.get("/api/songs");
