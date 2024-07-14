@@ -15,7 +15,7 @@ export default function SongsForm({ open, close }) {
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
-  const { fetchSongs } = useSongsState();
+  const { fetchSongs, authState } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
     status: null,
@@ -38,6 +38,7 @@ export default function SongsForm({ open, close }) {
         title,
         composer,
         musicians: musiciansArr,
+        userId: authState[1],
       });
       setProcessModal({
         open: true,

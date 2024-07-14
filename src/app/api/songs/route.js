@@ -6,8 +6,8 @@ export async function POST(req) {
   const { title, composer, musicians } = await req.json();
 
   const result = await db.run(
-    "INSERT INTO compositions (title, composer) VALUES (?, ?)",
-    [title, composer]
+    "INSERT INTO compositions (title, composer, user_id) VALUES (?, ?,?)",
+    [title, composer, userId]
   );
   const compositionId = result.lastID;
 

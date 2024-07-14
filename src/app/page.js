@@ -9,10 +9,11 @@ import Link from "next/link";
 import Composition from "./components/composition";
 import axios from "axios";
 import { ScheduleIcon, PlusIcon } from "../../public/images/svgs";
+import LoginComponent from "./components/LoginComponent";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-  const { songs, fetchSongs } = useSongsState();
+  const { songs, fetchSongs, authState } = useSongsState();
   const asideScrollRef = useRef(null);
 
   // -------------------------HANDLING DELETE SONG FROM DB ----------------------------
@@ -40,68 +41,73 @@ export default function Home() {
     }
   }, [openModal]);
 
-  return (
-    <>
-      <main className={styles.main}>
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/images/lutos_logo_przez.png"
-            alt="Lutos Logo"
-            width={180}
-            height={180}
-          />
-          <p>music management tool of new generation</p>
-        </div>
+  // ------------------------Rendering frontend based on authentification status --------------------------------------
+  if (authState[0] === "unauthenticated") {
+    return <LoginComponent />;
+  } else if (authState[0] === "authenticated") {
+    return (
+      <>
+        <main className={styles.main}>
+          <div className={styles.center}>
+            <Image
+              className={styles.logo}
+              src="/images/lutos_logo_przez.png"
+              alt="Lutos Logo"
+              width={180}
+              height={180}
+            />
+            <p>music management tool of new generation</p>
+          </div>
 
-        {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
-        <SongsForm
-          open={openModal}
-          close={() => {
-            setOpenModal(false);
-          }}
-        />
-        {/* ---------------------- Buttons ----------------------------------------------- */}
-        <div className={styles.grid}>
-          <button
-            onClick={() => {
-              setOpenModal(true);
+          {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
+          <SongsForm
+            open={openModal}
+            close={() => {
+              setOpenModal(false);
             }}
-            className={styles.card}
-          >
-            <PlusIcon />
-            <h2>Add</h2>
-            <p>Add new compositions to your project</p>
-          </button>
+          />
+          {/* ---------------------- Buttons ----------------------------------------------- */}
+          <div className={styles.grid}>
+            <button
+              onClick={() => {
+                setOpenModal(true);
+              }}
+              className={styles.card}
+            >
+              <PlusIcon />
+              <h2>Add</h2>
+              <p>Add new compositions to your project</p>
+            </button>
 
-          <Link href="/schedule" className={styles.card}>
-            <ScheduleIcon />
-            <h2>Schedule</h2>
-            <p>Create your rehearsal schedule</p>
-          </Link>
-        </div>
-      </main>
-      {/* -------------------  COMPOSITIONS LIST FROM DB --------------------------------- */}
-      <aside className={styles.aside} ref={asideScrollRef}>
-        <h2 className={styles.compositionTitle}>
-          {songs.length !== 0 && "Compositions in Database"}
-        </h2>
-        <div className={styles.songsGrid}>
-          {songs &&
-            songs.map((s) => {
-              return (
-                <div key={s.id} className={styles.compositionDiv}>
-                  <Composition
-                    onSelect={() => handleDeleteSong(s.id)}
-                    title={s.title}
-                    composer={s.composer}
-                    musicians={s.musicians}
-                  />
-                </div>
-              );
-            })}
-        </div>
-      </aside>
-    </>
-  );
+            <Link href="/schedule" className={styles.card}>
+              <ScheduleIcon />
+              <h2>Schedule</h2>
+              <p>Create your rehearsal schedule</p>
+            </Link>
+          </div>
+        </main>
+        {/* -------------------  COMPOSITIONS LIST FROM DB --------------------------------- */}
+        <aside className={styles.aside} ref={asideScrollRef}>
+          <h2 className={styles.compositionTitle}>
+            {songs.length !== 0 && "Compositions in Database"}
+          </h2>
+          <div className={styles.songsGrid}>
+            {songs &&
+              songs.map((s) => {
+                return (
+                  <div key={s.id} className={styles.compositionDiv}>
+                    <Composition
+                      onSelect={() => handleDeleteSong(s.id)}
+                      title={s.title}
+                      composer={s.composer}
+                      musicians={s.musicians}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+        </aside>
+      </>
+    );
+  }
 }
