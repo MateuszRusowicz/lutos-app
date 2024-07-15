@@ -2,6 +2,7 @@ Lutos is an App to manage music Festivals. Primarily it's purpose is to manage m
 as well as count the number of rehearsals of a given piece.
 
 It is currently (june 2024) being developed beacause 2-3 music festivals would like to use such a tool this summer.
+
 I have deliberately decided to make some moves to show versatile knowledge and programming skills.
 - using Next Js for full-stack dev;
 - using SQLite database;
@@ -9,6 +10,7 @@ I have deliberately decided to make some moves to show versatile knowledge and p
 - using axios for asynchronous code and better error handling;
 - basic CSS styles come from default Next Js settings crafted for the need of this project. I used chatGPT to generate simmilar CSS for other components and then adjusted it to match the overall experience.
 - using context to provide multiple components with data from db by custom hook that shares the state
+- authentification and login mechanism added and will add salting for security in near future
 
 more detailed solutions:
 -using ref and use effect to scroll view in the main file
