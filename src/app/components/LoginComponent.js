@@ -3,6 +3,7 @@
 import Modal from "react-modal";
 import { useState } from "react";
 import styles from "./LoginComponent.module.css";
+import axios from "axios";
 
 export default function LoginComponent() {
   const [openModal, setOpenModal] = useState(false);
@@ -11,16 +12,41 @@ export default function LoginComponent() {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [reenteredNewPassword, setReenteredNewPassword] = useState("");
+  const [question, setQuestion] = useState("");
 
-  const handleLogIn = function () {
-    // sprawdza dane z db
-    //zmienia w kontekście zalogowanie wraz z id!
+  const handleLogIn = function (e) {
+    e.preventDefault()
+    // get data from db if exists
+    // sprawdza hasło z tym co jest przypisane do maila
+    // zmienia w kontekście zalogowanie wraz z id!
   };
-  const handleNewUser = function () {
+
+  const handleNewUser = async function (e) {
+    e.preventDefault();
     if (newPassword !== reenteredNewPassword) {
       return alert("New Password must match re-entered New Password!");
+    } else {
+      try {
+        const response = await axios.post("/api/login", {
+          email: newEmail,
+          password: newPassword,
+          question,
+        });
+
+        if (response.status === 200) {
+          console.log("successfully added new user to database");
+          setNewEmail("");
+          setNewPassword("");
+          setReenteredNewPassword("");
+          setQuestion("");
+          setOpenModal(false);
+        } else{
+          throw new Error('Error registiring new user');
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
-    // publikuje w db i zwraca informacje o sukcesie lub braku (error handling) wraca do ekranu login
   };
 
   return (
@@ -106,6 +132,18 @@ export default function LoginComponent() {
                 id="reenteredNewPassword"
                 name="reenteredNewPassword"
                 required
+              />
+            </li>
+            <li>
+              <label htmlFor="question">
+                Question to help remind the password
+              </label>
+              <input
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                type="text"
+                id="question"
+                name="question"
               />
             </li>
             <li>
