@@ -6,7 +6,9 @@ const dbSetup = async function () {
   create table if not exists compositions(
     id integer primary key,
     composer varchar(100) not null,
-    title varchar(100) not null
+    title varchar(100) not null,
+    user_id integer not null,
+    foreign key (user_id) references users(id)
   );
   create table if not exists musicians(
     id integer primary key,
@@ -17,7 +19,12 @@ const dbSetup = async function () {
     musician_id integer,
     foreign key (composition_id) references compositions(id),
     foreign key (musician_id) references musicians(id)
-  );`);
+  );
+  create table if not exists users(
+  id integer primary key,
+  email varchar(50) not null,
+  password varchar(50) not null,
+  question varchar (150))`);
   console.log("performed successfully");
 };
 

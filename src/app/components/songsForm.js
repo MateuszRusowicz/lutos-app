@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
@@ -14,7 +15,7 @@ export default function SongsForm({ open, close }) {
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
   const [musicians, setMusicians] = useState("");
-  const { fetchSongs } = useSongsState();
+  const { fetchSongs, authState } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
     status: null,
@@ -32,10 +33,12 @@ export default function SongsForm({ open, close }) {
     //render spinner add
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
-      const postedSong = await axios.post("/api/songs", {
+      await axios.post("/api/songs", {
+        // ---- cut saving into variable const posted songs??????????????????????
         title,
         composer,
         musicians: musiciansArr,
+        userId: authState[1],
       });
       setProcessModal({
         open: true,
