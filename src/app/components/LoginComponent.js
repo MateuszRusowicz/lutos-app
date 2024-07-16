@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { useState } from "react";
 import styles from "./LoginComponent.module.css";
 import axios from "axios";
+import { useSongsState } from "../context-hook/useSongsState";
 
 export default function LoginComponent() {
   const [openModal, setOpenModal] = useState(false);
@@ -13,12 +14,23 @@ export default function LoginComponent() {
   const [newPassword, setNewPassword] = useState("");
   const [reenteredNewPassword, setReenteredNewPassword] = useState("");
   const [question, setQuestion] = useState("");
+  const { setAuthState } = useSongsState();
 
-  const handleLogIn = function (e) {
-    e.preventDefault()
-    // get data from db if exists
-    // sprawdza hasło z tym co jest przypisane do maila
-    // zmienia w kontekście zalogowanie wraz z id!
+  const handleLogIn = async function (e) {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/login", { email, password });
+      if (response.status === 200) {
+        const { id } = response.data;
+        setAuthState(["authenticated", id]);
+        setEmail("");
+        setPassword("");
+      } else {
+        throw new Error("error fetching data", response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleNewUser = async function (e) {
@@ -27,21 +39,23 @@ export default function LoginComponent() {
       return alert("New Password must match re-entered New Password!");
     } else {
       try {
-        const response = await axios.post("/api/login", {
+        const response = await axios.post("/api/registerNewUser", {
           email: newEmail,
           password: newPassword,
           question,
         });
 
         if (response.status === 200) {
-          console.log("successfully added new user to database");
+          const { id } = response.data;
+          console.log("successfully added new user to database", response);
+          setAuthState(["authenticated", id]);
           setNewEmail("");
           setNewPassword("");
           setReenteredNewPassword("");
           setQuestion("");
           setOpenModal(false);
-        } else{
-          throw new Error('Error registiring new user');
+        } else {
+          throw new Error("Error registiring new user");
         }
       } catch (err) {
         console.error(err);

@@ -11,11 +11,11 @@ export const useSongsState = () => {
 
 export const SongsContextProvider = ({ children }) => {
   const [songs, setSongs] = useState([]); // w zasadzie to nigdzie nie używam setSongs bo idą bezpośrednio z DB i używam fetch songs, ale chyba potrzebuję to use State, co?
-  const [authState, setAuthState] = useState(["unauthenticated", 1]); // loading, authenticated, id!!!---------------------------------------------
+  const [authState, setAuthState] = useState(["unauthenticated", 0]); // loading, authenticated, id!!!---------------------------------------------
 
   const fetchSongs = async function () {
     try {
-      const res = await axios.get("/api/songs");
+      const res = await axios.get("/api/songs", { userId: authState[1] });
       setSongs(res.data);
     } catch (error) {
       console.error("error fetching songs:", error); //---------------------DODAJ ERROR HANDLING
@@ -27,7 +27,9 @@ export const SongsContextProvider = ({ children }) => {
   }, [setSongs]);
 
   return (
-    <SongsContext.Provider value={{ songs, setSongs, fetchSongs, authState }}>
+    <SongsContext.Provider
+      value={{ songs, setSongs, fetchSongs, authState, setAuthState }}
+    >
       {children}
     </SongsContext.Provider>
   );
