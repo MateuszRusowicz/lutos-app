@@ -21,7 +21,7 @@ export default function LoginComponent() {
     try {
       const response = await axios.post("/api/login", { email, password });
       if (response.status === 200) {
-        const { id } = response.data;
+        const id = response.data.id;
         setAuthState(["authenticated", id]);
         setEmail("");
         setPassword("");
@@ -46,7 +46,7 @@ export default function LoginComponent() {
         });
 
         if (response.status === 200) {
-          const { id } = response.data;
+          const id = response.data.id;
           console.log("successfully added new user to database", response);
           setAuthState(["authenticated", id]);
           setNewEmail("");

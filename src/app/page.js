@@ -16,6 +16,13 @@ export default function Home() {
   const { songs, fetchSongs, authState } = useSongsState();
   const asideScrollRef = useRef(null);
 
+  // Fetch songs when authState changes to "authenticated"
+  useEffect(() => {
+    if (authState[0] === "authenticated") {
+      fetchSongs();
+    }
+  }, [authState, fetchSongs]);
+
   // -------------------------HANDLING DELETE SONG FROM DB ----------------------------
   const handleDeleteSong = async function (id) {
     const isConfirmed = confirm(

@@ -12,8 +12,7 @@ export async function POST(req) {
   const compositionId = result.lastID;
 
   for (const musician of musicians) {
-    const musiciansResult = await db.run(
-      //------------???????????????czy potrzebujemy to trzymać w osobnej zmiennej?
+    await db.run(
       "INSERT INTO musicians (name) VALUES (?) ON CONFLICT(name) DO NOTHING",
       [musician]
     );
@@ -35,9 +34,7 @@ export async function POST(req) {
 
 export async function GET(req) {
   const db = await openDb();
-  const { userId } = req;
-  console.log(userId);
-  console.log(req);
+  const userId = req.nextUrl.searchParams.get("userId");
   const songs = await db.all(
     "select compositions.id as id, title, composer, user_id, group_concat(musicians.name, ', ') as musicians from compositions join compositions_musicians on compositions.id=compositions_musicians.composition_id join musicians on compositions_musicians.musician_id=musicians.id where compositions.user_id = ? group by compositions.id;",
     [userId]
