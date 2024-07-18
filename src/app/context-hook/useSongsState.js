@@ -31,12 +31,12 @@ export const SongsContextProvider = ({ children }) => {
         console.error("error fetching songs:", error); //---------------------DODAJ ERROR HANDLING
       }
     },
-    [authState] //--------------------------------CUT SONGS from dependencies
+    [authState]
   );
 
   useEffect(() => {
     if (authState === "authenticated") fetchSongs();
-  }, [authState, fetchSongs]); //----------------------------CUT SONGS FROM DEPENDENCIES
+  }, [authState, fetchSongs]);
 
   return (
     <SongsContext.Provider
