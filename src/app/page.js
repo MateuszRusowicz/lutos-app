@@ -10,10 +10,11 @@ import Composition from "./components/composition";
 import axios from "axios";
 import { ScheduleIcon, PlusIcon } from "../../public/images/svgs";
 import LoginComponent from "./components/LoginComponent";
+import { UserOutlined } from "@ant-design/icons";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-  const { songs, fetchSongs, authState } = useSongsState();
+  const { songs, fetchSongs, authState, setAuthState } = useSongsState();
   const asideScrollRef = useRef(null);
 
   // Fetch songs when authState changes to "authenticated"
@@ -23,7 +24,7 @@ export default function Home() {
     }
   }, [authState, fetchSongs]);
 
-  // -------------------------HANDLING DELETE SONG FROM DB ----------------------------
+  // -------------------------HANDLING DELETE SONG FROM DB / LOGOUT USER ----------------------------
   const handleDeleteSong = async function (id) {
     const isConfirmed = confirm(
       "This will delete the song from database. Are you sure you want to continue?"
@@ -39,6 +40,16 @@ export default function Home() {
     } catch (err) {
       console.error("error deleting song:", err);
     }
+  };
+
+  const handleLogOut = function () {
+    const isConfirmed = confirm(
+      "This will log you out. Are you sure you want to continue?"
+    );
+    if (!isConfirmed) {
+      return;
+    }
+    setAuthState(["unauthenticated", 0]);
   };
 
   // ----------------------- SCROLLING COMPOSITIONS LIST INTO VIEW WHEN ADDING NEW COMPOSITON-------------------------
@@ -114,6 +125,12 @@ export default function Home() {
               })}
           </div>
         </aside>
+        <div className={styles.logoutButtonContainer}>
+          <button onClick={handleLogOut} className={styles.card}>
+            <UserOutlined className={styles.icon} />
+            <p>log out</p>
+          </button>
+        </div>
       </>
     );
   }

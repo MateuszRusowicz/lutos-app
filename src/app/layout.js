@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import { SongsContextProvider } from "./context-hook/useSongsState";
-
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,7 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SongsContextProvider>{children}</SongsContextProvider>
+        <SongsContextProvider>
+          <main>{children}</main>
+        </SongsContextProvider>
       </body>
     </html>
   );

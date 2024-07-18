@@ -66,7 +66,7 @@ const MenuApp = () => {
       onClick={onClick}
       selectedKeys={[current]}
       mode="horizontal"
-      items={items}
+      items={options || items}
       theme="dark"
     />
   );

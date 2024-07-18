@@ -118,3 +118,17 @@
   flex-direction: column;
   align-content: center;
 }
+
+/* LogOut Button */
+.logoutButtonContainer {
+  background: rgba(var(--card-rgb), 0);
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
