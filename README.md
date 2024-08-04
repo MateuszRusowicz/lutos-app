@@ -14,6 +14,8 @@ I have deliberately decided to make some moves to show versatile knowledge and p
 
 more detailed solutions:
 -using ref and use effect to scroll view in the main file
+-using useCallback to prevent infinite loop in the Context Hook
+
 
 
 *****************************
