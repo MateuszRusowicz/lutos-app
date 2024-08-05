@@ -9,6 +9,8 @@ export default function Schedule() {
   const [pickedSongs, setPickedSongs] = useState([]);
   const [clashing, setClashing] = useState(false);
 
+  console.log(authState, songs);
+
   const handleAdd = function (id, index) {
     const musiciansArr = songs[index].musicians
       .toLowerCase()
@@ -47,6 +49,8 @@ export default function Schedule() {
   const handleRemove = function (id) {
     setPickedSongs((prev) => prev.filter((songId) => songId !== id));
   };
+
+  // RENDER COMPONENT HTML
   if (authState === "loading") return <>Loading</>;
   else if (authState === "unathenticated") return <>Sign in</>;
   else if (authState === "authenticated")

@@ -30,15 +30,17 @@ export default function LoginComponent() {
         setEmail("");
         setPassword("");
       } else {
-        throw new Error("error fetching data", response);
+        throw new Error("incorrect data");
       }
     } catch (err) {
       setStatus("error");
+      setTimeout(() => setStatus(""), 3000);
       console.error(err);
     }
   };
 
   // ADDING NEW USER FUNCTION
+
   const handleNewUser = async function (e) {
     e.preventDefault();
     if (newPassword !== reenteredNewPassword) {
