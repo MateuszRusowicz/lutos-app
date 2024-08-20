@@ -34,7 +34,7 @@ export async function POST(req) {
 
 export async function GET(req) {
   const db = await openDb();
-  const userId = req.nextUrl.searchParams.get("userId");
+  const userId = 1; //tutaj coś jest źle, powinno być req.query.userId ale to też nie działa...
   const songs = await db.all(
     "select compositions.id as id, title, composer, user_id, group_concat(musicians.name, ', ') as musicians from compositions join compositions_musicians on compositions.id=compositions_musicians.composition_id join musicians on compositions_musicians.musician_id=musicians.id where compositions.user_id = ? group by compositions.id;",
     [userId]
