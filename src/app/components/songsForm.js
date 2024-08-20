@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
 import axios from "axios";
@@ -22,6 +22,8 @@ export default function SongsForm({ open, close }) {
     message: "",
   });
 
+  const timerRef = useRef(null);
+
   const handleSubmit = async function (e) {
     e.preventDefault();
     const musiciansArr = musicians
@@ -31,6 +33,7 @@ export default function SongsForm({ open, close }) {
       .filter((m) => m !== "");
 
     //render spinner add
+
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/songs", {
@@ -44,7 +47,7 @@ export default function SongsForm({ open, close }) {
         status: 200,
         message: "Successfully added to database",
       });
-      setTimeout(
+      timerRef.current = setTimeout(
         () => setProcessModal({ open: false, status: null, message: "" }),
         5000
       );
@@ -54,9 +57,9 @@ export default function SongsForm({ open, close }) {
         status: 500,
         message: `Error posting data: ${err}`,
       });
-      setTimeout(
+      timerRef.current = setTimeout(
         () => setProcessModal({ open: false, status: null, message: "" }),
-        1000
+        3000
       );
     }
     //fetch songs i reset input state
@@ -133,6 +136,10 @@ export default function SongsForm({ open, close }) {
         appElement={document.getElementById("root")}
         overlayClassName={styles.modalOverlay}
         className={styles.modalContent}
+        onRequestClose={() => {
+          clearTimeout(timerRef.current);
+          setProcessModal({ open: false, status: null, message: "" });
+        }}
       >
         {processModal.status === 200 ? (
           <>
