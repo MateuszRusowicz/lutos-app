@@ -16,6 +16,10 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const { songs, fetchSongs, authState, setAuthState } = useSongsState();
   const asideScrollRef = useRef(null);
+  const [isRendered, setIsRendered] = useState(false);
+  useEffect(() => {
+    setIsRendered(true);
+  }, []);
 
   // Fetch songs when authState changes to "authenticated"
   useEffect(() => {
@@ -78,12 +82,14 @@ export default function Home() {
           </div>
 
           {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
-          <SongsForm
-            open={openModal}
-            close={() => {
-              setOpenModal(false);
-            }}
-          />
+          {isRendered && (
+            <SongsForm
+              open={openModal}
+              close={() => {
+                setOpenModal(false);
+              }}
+            />
+          )}
           {/* ---------------------- Buttons ----------------------------------------------- */}
           <div className={styles.grid}>
             <button
