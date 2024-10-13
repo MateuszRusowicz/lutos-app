@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
 import styles from "./songsForm.module.css";
 import axios from "axios";
@@ -21,6 +21,12 @@ export default function SongsForm({ open, close }) {
     status: null,
     message: "",
   });
+  const [isRendered, setIsRendered] = useState(false);
+  useEffect(() => {
+    setIsRendered(true);
+  }, []);
+
+  const timerRef = useRef(null);
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -31,6 +37,7 @@ export default function SongsForm({ open, close }) {
       .filter((m) => m !== "");
 
     //render spinner add
+
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/songs", {
@@ -44,7 +51,7 @@ export default function SongsForm({ open, close }) {
         status: 200,
         message: "Successfully added to database",
       });
-      setTimeout(
+      timerRef.current = setTimeout(
         () => setProcessModal({ open: false, status: null, message: "" }),
         5000
       );
@@ -54,9 +61,9 @@ export default function SongsForm({ open, close }) {
         status: 500,
         message: `Error posting data: ${err}`,
       });
-      setTimeout(
+      timerRef.current = setTimeout(
         () => setProcessModal({ open: false, status: null, message: "" }),
-        1000
+        3000
       );
     }
     //fetch songs i reset input state
@@ -69,85 +76,93 @@ export default function SongsForm({ open, close }) {
 
   return (
     <>
-      <Modal
-        isOpen={open}
-        onRequestClose={close}
-        contentLabel="add new song"
-        overlayClassName={styles.modalOverlay}
-        className={styles.modalContent}
-        appElement={document.getElementById("root")}
-      >
-        <form onSubmit={handleSubmit}>
-          <h2 className={styles.title}>Insert new composition</h2>
-          <ul className={styles.formGroup}>
-            <li>
-              <label htmlFor="composer">Composer</label>
-              <input
-                value={composer}
-                onChange={(e) => setComposer(e.target.value)}
-                type="text"
-                id="composer"
-                name="composer"
-                placeholder="W.A. Mozart"
-                required
-              />
-            </li>
-            <li>
-              <label htmlFor="title">Title</label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                type="text"
-                id="title"
-                name="title"
-                placeholder="String quartet"
-                required
-              />
-            </li>
-            <li>
-              <label htmlFor="musicians">Musicians</label>
-              <input
-                value={musicians}
-                onChange={(e) => setMusicians(e.target.value)}
-                type="text"
-                id="musicians"
-                name="musicians"
-                placeholder="Hans von Bulow, Joseph Joachim (coma-separated)"
-                required
-              />
-            </li>
-          </ul>
-          <div className={styles.buttonGroup}>
-            <button className={styles.closeButton} onClick={close}>
-              Close
-            </button>
-            <button type="submit" className={styles.submitButton}>
-              Submit
-            </button>
-          </div>
-        </form>
-      </Modal>
+      {isRendered && (
+        <Modal
+          isOpen={open}
+          onRequestClose={close}
+          contentLabel="add new song"
+          overlayClassName={styles.modalOverlay}
+          className={styles.modalContent}
+          appElement={document.getElementById("root")}
+        >
+          <form onSubmit={handleSubmit}>
+            <h2 className={styles.title}>Insert new composition</h2>
+            <ul className={styles.formGroup}>
+              <li>
+                <label htmlFor="composer">Composer</label>
+                <input
+                  value={composer}
+                  onChange={(e) => setComposer(e.target.value)}
+                  type="text"
+                  id="composer"
+                  name="composer"
+                  placeholder="W.A. Mozart"
+                  required
+                />
+              </li>
+              <li>
+                <label htmlFor="title">Title</label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="String quartet"
+                  required
+                />
+              </li>
+              <li>
+                <label htmlFor="musicians">Musicians</label>
+                <input
+                  value={musicians}
+                  onChange={(e) => setMusicians(e.target.value)}
+                  type="text"
+                  id="musicians"
+                  name="musicians"
+                  placeholder="Hans von Bulow, Joseph Joachim (coma-separated)"
+                  required
+                />
+              </li>
+            </ul>
+            <div className={styles.buttonGroup}>
+              <button className={styles.closeButton} onClick={close}>
+                Close
+              </button>
+              <button type="submit" className={styles.submitButton}>
+                Submit
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
       {/* ------------------- RENDER FETCH STATUS: SPINNER/SUCCESS/ERROR------------------------------ */}
-      <Modal
-        isOpen={processModal.open}
-        appElement={document.getElementById("root")}
-        overlayClassName={styles.modalOverlay}
-        className={styles.modalContent}
-      >
-        {processModal.status === 200 ? (
-          <>
-            <h3>{processModal.message}</h3>
-            <ConfirmIcon />
-          </>
-        ) : processModal.status === 500 ? (
-          <>
-            <h3>{processModal.message}</h3>
-            <ErrorIcon />
-          </>
-        ) : (
-          <SpinnerIcon />
-        )}
-      </Modal>
+      {isRendered && (
+        <Modal
+          isOpen={processModal.open}
+          appElement={document.getElementById("root")}
+          overlayClassName={styles.modalOverlay}
+          className={styles.modalContent}
+          onRequestClose={() => {
+            clearTimeout(timerRef.current);
+            setProcessModal({ open: false, status: null, message: "" });
+          }}
+        >
+          {processModal.status === 200 ? (
+            <>
+              <h3>{processModal.message}</h3>
+              <ConfirmIcon />
+            </>
+          ) : processModal.status === 500 ? (
+            <>
+              <h3>{processModal.message}</h3>
+              <ErrorIcon />
+            </>
+          ) : (
+            <SpinnerIcon />
+          )}
+        </Modal>
+      )}
     </>
   );
 }

@@ -9,7 +9,7 @@ export default function Schedule() {
   const [pickedSongs, setPickedSongs] = useState([]);
   const [clashing, setClashing] = useState(false);
 
-  console.log(authState, songs);
+  console.log(songs);
 
   const handleAdd = function (id, index) {
     const musiciansArr = songs[index].musicians
@@ -51,9 +51,9 @@ export default function Schedule() {
   };
 
   // RENDER COMPONENT HTML
-  if (authState === "loading") return <>Loading</>;
-  else if (authState === "unathenticated") return <>Sign in</>;
-  else if (authState === "authenticated")
+  if (authState[0] === "loading") return <>Loading</>;
+  else if (authState[0] === "unathenticated") return <>Sign in</>;
+  else if (authState[0] === "authenticated")
     return (
       <>
         <h1 className={styles.scheduleHeader}>Schedule</h1>
