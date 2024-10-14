@@ -4,18 +4,19 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useState, useRef, useEffect } from "react";
 import { useSongsState } from "./context-hook/useSongsState";
-import SongsForm from "./components/songsForm";
 import Link from "next/link";
 import Composition from "./components/composition";
 import axios from "axios";
 import { ScheduleIcon, PlusIcon } from "../../public/images/svgs";
 import LoginComponent from "./components/LoginComponent";
 import { UserOutlined } from "@ant-design/icons";
+import ModalForm from "./components/modalForm";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const { songs, fetchSongs, authState, setAuthState } = useSongsState();
   const asideScrollRef = useRef(null);
+  const [formContent, setFormContent]=useState()
   const [isRendered, setIsRendered] = useState(false);
   useEffect(() => {
     setIsRendered(true);
@@ -83,7 +84,8 @@ export default function Home() {
 
           {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
           {isRendered && (
-            <SongsForm
+            <ModalForm
+              formContent={formContent}
               open={openModal}
               close={() => {
                 setOpenModal(false);
@@ -94,13 +96,26 @@ export default function Home() {
           <div className={styles.grid}>
             <button
               onClick={() => {
+                setFormContent("composition");
                 setOpenModal(true);
               }}
               className={styles.card}
             >
               <PlusIcon />
-              <h2>Add</h2>
+              <h2>Composition</h2>
               <p>Add new compositions to your project</p>
+            </button>
+
+            <button
+              onClick={() => {
+                setFormContent("musicians");
+                setOpenModal(true);
+              }}
+              className={styles.card}
+            >
+              <PlusIcon />
+              <h2>Musician</h2>
+              <p>Add new musician</p>
             </button>
 
             <Link href="/schedule" className={styles.card}>

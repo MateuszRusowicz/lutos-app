@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
-import styles from "./songsForm.module.css";
+import styles from "./modalForm.module.css";
 import axios from "axios";
 import { useSongsState } from "../context-hook/useSongsState";
 import {
@@ -10,7 +10,7 @@ import {
   ErrorIcon,
 } from "../../../public/images/svgs";
 
-export default function SongsForm({ open, close }) {
+export default function ModalForm({ open, close, formContent }) {
   //state for each input and custom hook from context api
   const [composer, setComposer] = useState("");
   const [title, setTitle] = useState("");
