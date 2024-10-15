@@ -9,12 +9,20 @@ import {
   ConfirmIcon,
   ErrorIcon,
 } from "../../../public/images/svgs";
+import CompositionForm from "./forms/CompostionForm";
 
 export default function ModalForm({ open, close, formContent }) {
   //state for each input and custom hook from context api
-  const [composer, setComposer] = useState("");
-  const [title, setTitle] = useState("");
-  const [musicians, setMusicians] = useState("");
+  const [compositionData, setCompositionData] = useState({
+    composer: "",
+    title: "",
+    musiciansId: "",
+  });
+  const [musiciansData, setMusiciansData] = useState({
+    firstName: "",
+    secondName: "",
+    instrument: "",
+  });
   const { fetchSongs, authState } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
@@ -30,7 +38,7 @@ export default function ModalForm({ open, close, formContent }) {
 
   const handleSubmit = async function (e) {
     e.preventDefault();
-    const musiciansArr = musicians
+    const musiciansArr = musiciansData
       .toLowerCase()
       .trim()
       .split(",")
@@ -69,9 +77,16 @@ export default function ModalForm({ open, close, formContent }) {
     //fetch songs i reset input state
     close();
     fetchSongs();
-    setComposer("");
-    setTitle("");
-    setMusicians("");
+    setCompositionData({
+      composer: "",
+      title: "",
+      musiciansId: "",
+    });
+    setMusiciansData({
+      firstName: "",
+      secondName: "",
+      instrument: "",
+    });
   };
 
   return (
@@ -85,55 +100,14 @@ export default function ModalForm({ open, close, formContent }) {
           className={styles.modalContent}
           appElement={document.getElementById("root")}
         >
-          <form onSubmit={handleSubmit}>
-            <h2 className={styles.title}>Insert new composition</h2>
-            <ul className={styles.formGroup}>
-              <li>
-                <label htmlFor="composer">Composer</label>
-                <input
-                  value={composer}
-                  onChange={(e) => setComposer(e.target.value)}
-                  type="text"
-                  id="composer"
-                  name="composer"
-                  placeholder="W.A. Mozart"
-                  required
-                />
-              </li>
-              <li>
-                <label htmlFor="title">Title</label>
-                <input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="String quartet"
-                  required
-                />
-              </li>
-              <li>
-                <label htmlFor="musicians">Musicians</label>
-                <input
-                  value={musicians}
-                  onChange={(e) => setMusicians(e.target.value)}
-                  type="text"
-                  id="musicians"
-                  name="musicians"
-                  placeholder="Hans von Bulow, Joseph Joachim (coma-separated)"
-                  required
-                />
-              </li>
-            </ul>
-            <div className={styles.buttonGroup}>
-              <button className={styles.closeButton} onClick={close}>
-                Close
-              </button>
-              <button type="submit" className={styles.submitButton}>
-                Submit
-              </button>
-            </div>
-          </form>
+          <CompositionForm
+            formContent={formContent}
+            handleSubmit={handleSubmit}
+            state={
+              formContent === "composition" ? compositionData : musiciansData
+            }
+            stateUpdate={formContent === "composition" ? setCompositionData:setMusiciansData}
+          />
         </Modal>
       )}
       {/* ------------------- RENDER FETCH STATUS: SPINNER/SUCCESS/ERROR------------------------------ */}
