@@ -20,7 +20,7 @@ export default function ModalForm({ open, close, formContent }) {
   });
   const [musiciansData, setMusiciansData] = useState({
     firstName: "",
-    secondName: "",
+    lastName: "",
     instrument: "",
   });
   const { fetchSongs, authState } = useSongsState();
@@ -36,7 +36,9 @@ export default function ModalForm({ open, close, formContent }) {
 
   const timerRef = useRef(null);
 
-  const handleSubmit = async function (e) {
+  // ------------------HANDLERS---------------------------------------
+
+  const submitComposition = async function (e) {
     e.preventDefault();
     const musiciansArr = musiciansData
       .toLowerCase()
@@ -44,11 +46,11 @@ export default function ModalForm({ open, close, formContent }) {
       .split(",")
       .filter((m) => m !== "");
 
-    //render spinner add
+    //add render spinner
 
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
-      await axios.post("/api/songs", {
+      await axios.post("/api/compositions", {
         title,
         composer,
         musicians: musiciansArr,
@@ -89,6 +91,45 @@ export default function ModalForm({ open, close, formContent }) {
     });
   };
 
+  const submitMusician = async function (e) {
+    e.preventDefault();
+
+    const formattedFirstName = musiciansData.firstName.toLowerCase().trim();
+    const formattedLastName = musiciansData.lastName.toLowerCase().trim();
+
+    setProcessModal({ open: true, status: "waitingSpinner" });
+    try {
+      await axios.post("/api/musicians", {
+        firstName: formattedFirstName,
+        lastName: formattedLastName,
+        instrument: musiciansData.instrument,
+        userId: authState[1],
+      });
+      setProcessModal({
+        open: true,
+        status: 200,
+        message: "Successfully added to database",
+      });
+      timerRef.current = setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        5000
+      );
+    } catch (err) {
+      setProcessModal({
+        open: true,
+        status: 500,
+        message: `Error posting data: ${err}`,
+      });
+      timerRef.current = setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        3000
+      );
+    }
+  };
+  const handleSubmit =
+    formContent === "composition" ? submitComposition : submitMusician;
+
+  // -----------------------------RENDERING THE MODAL FORM
   return (
     <>
       {isRendered && (
@@ -106,7 +147,11 @@ export default function ModalForm({ open, close, formContent }) {
             state={
               formContent === "composition" ? compositionData : musiciansData
             }
-            stateUpdate={formContent === "composition" ? setCompositionData:setMusiciansData}
+            stateUpdate={
+              formContent === "composition"
+                ? setCompositionData
+                : setMusiciansData
+            }
           />
         </Modal>
       )}

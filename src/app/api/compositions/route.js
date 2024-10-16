@@ -3,26 +3,17 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const db = await openDb();
-  const { title, composer, musicians, userId } = await req.json();
+  const { title, composer, musiciansId, userId } = await req.json();
 
   const result = await db.run(
     "INSERT INTO compositions (title, composer, user_id) VALUES (?, ?,?)",
     [title, composer, userId]
   );
   const compositionId = result.lastID;
-
-  for (const musician of musicians) {
-    await db.run(
-      "INSERT INTO musicians (name) VALUES (?) ON CONFLICT(name) DO NOTHING",
-      [musician]
-    );
-    const musicianId = (
-      await db.get("SELECT id FROM musicians WHERE name = ?", [musician])
-    ).id;
-
+  for (const id of musiciansId) {
     await db.run(
       "INSERT INTO compositions_musicians (composition_id, musician_id) VALUES (?, ?)",
-      [compositionId, musicianId]
+      [compositionId, id]
     );
   }
 
