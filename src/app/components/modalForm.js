@@ -16,7 +16,7 @@ export default function ModalForm({ open, close, formContent }) {
   const [compositionData, setCompositionData] = useState({
     composer: "",
     title: "",
-    musiciansId: "",
+    musiciansId: [],
   });
   const [musiciansData, setMusiciansData] = useState({
     firstName: "",

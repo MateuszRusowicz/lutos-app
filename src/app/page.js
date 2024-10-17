@@ -14,9 +14,10 @@ import ModalForm from "./components/modalForm";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-  const { songs, fetchSongs, authState, setAuthState } = useSongsState();
+  const { songs, fetchSongs, authState, setAuthState, fetchMusicians } =
+    useSongsState();
   const asideScrollRef = useRef(null);
-  const [formContent, setFormContent]=useState()
+  const [formContent, setFormContent] = useState();
   const [isRendered, setIsRendered] = useState(false);
   useEffect(() => {
     setIsRendered(true);
