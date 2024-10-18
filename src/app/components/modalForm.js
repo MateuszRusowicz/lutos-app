@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Modal from "react-modal";
-import styles from "./songsForm.module.css";
+import styles from "./modalForm.module.css";
 import axios from "axios";
 import { useSongsState } from "../context-hook/useSongsState";
 import {
@@ -9,12 +9,20 @@ import {
   ConfirmIcon,
   ErrorIcon,
 } from "../../../public/images/svgs";
+import CompositionForm from "./forms/CompostionForm";
 
-export default function SongsForm({ open, close }) {
+export default function ModalForm({ open, close, formContent }) {
   //state for each input and custom hook from context api
-  const [composer, setComposer] = useState("");
-  const [title, setTitle] = useState("");
-  const [musicians, setMusicians] = useState("");
+  const [compositionData, setCompositionData] = useState({
+    composer: "",
+    title: "",
+    musiciansId: [],
+  });
+  const [musiciansData, setMusiciansData] = useState({
+    firstName: "",
+    lastName: "",
+    instrument: "",
+  });
   const { fetchSongs, authState } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
@@ -28,22 +36,16 @@ export default function SongsForm({ open, close }) {
 
   const timerRef = useRef(null);
 
-  const handleSubmit = async function (e) {
+  // ------------------HANDLERS---------------------------------------
+
+  const submitComposition = async function (e) {
     e.preventDefault();
-    const musiciansArr = musicians
-      .toLowerCase()
-      .trim()
-      .split(",")
-      .filter((m) => m !== "");
 
-    //render spinner add
-
+    //add render spinner
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
-      await axios.post("/api/songs", {
-        title,
-        composer,
-        musicians: musiciansArr,
+      await axios.post("/api/compositions", {
+        ...compositionData,
         userId: authState[1],
       });
       setProcessModal({
@@ -69,11 +71,57 @@ export default function SongsForm({ open, close }) {
     //fetch songs i reset input state
     close();
     fetchSongs();
-    setComposer("");
-    setTitle("");
-    setMusicians("");
+    setCompositionData({
+      composer: "",
+      title: "",
+      musiciansId: "",
+    });
+    setMusiciansData({
+      firstName: "",
+      lastName: "",
+      instrument: "",
+    });
   };
 
+  const submitMusician = async function (e) {
+    e.preventDefault();
+
+    const formattedFirstName = musiciansData.firstName.toLowerCase().trim();
+    const formattedLastName = musiciansData.lastName.toLowerCase().trim();
+
+    setProcessModal({ open: true, status: "waitingSpinner" });
+    try {
+      await axios.post("/api/musicians", {
+        firstName: formattedFirstName,
+        lastName: formattedLastName,
+        instrument: musiciansData.instrument,
+        userId: authState[1],
+      });
+      setProcessModal({
+        open: true,
+        status: 200,
+        message: "Successfully added to database",
+      });
+      timerRef.current = setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        5000
+      );
+    } catch (err) {
+      setProcessModal({
+        open: true,
+        status: 500,
+        message: `Error posting data: ${err}`,
+      });
+      timerRef.current = setTimeout(
+        () => setProcessModal({ open: false, status: null, message: "" }),
+        3000
+      );
+    }
+  };
+  const handleSubmit =
+    formContent === "composition" ? submitComposition : submitMusician;
+
+  // -----------------------------RENDERING THE MODAL FORM
   return (
     <>
       {isRendered && (
@@ -85,55 +133,18 @@ export default function SongsForm({ open, close }) {
           className={styles.modalContent}
           appElement={document.getElementById("root")}
         >
-          <form onSubmit={handleSubmit}>
-            <h2 className={styles.title}>Insert new composition</h2>
-            <ul className={styles.formGroup}>
-              <li>
-                <label htmlFor="composer">Composer</label>
-                <input
-                  value={composer}
-                  onChange={(e) => setComposer(e.target.value)}
-                  type="text"
-                  id="composer"
-                  name="composer"
-                  placeholder="W.A. Mozart"
-                  required
-                />
-              </li>
-              <li>
-                <label htmlFor="title">Title</label>
-                <input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="String quartet"
-                  required
-                />
-              </li>
-              <li>
-                <label htmlFor="musicians">Musicians</label>
-                <input
-                  value={musicians}
-                  onChange={(e) => setMusicians(e.target.value)}
-                  type="text"
-                  id="musicians"
-                  name="musicians"
-                  placeholder="Hans von Bulow, Joseph Joachim (coma-separated)"
-                  required
-                />
-              </li>
-            </ul>
-            <div className={styles.buttonGroup}>
-              <button className={styles.closeButton} onClick={close}>
-                Close
-              </button>
-              <button type="submit" className={styles.submitButton}>
-                Submit
-              </button>
-            </div>
-          </form>
+          <CompositionForm
+            formContent={formContent}
+            handleSubmit={handleSubmit}
+            state={
+              formContent === "composition" ? compositionData : musiciansData
+            }
+            stateUpdate={
+              formContent === "composition"
+                ? setCompositionData
+                : setMusiciansData
+            }
+          />
         </Modal>
       )}
       {/* ------------------- RENDER FETCH STATUS: SPINNER/SUCCESS/ERROR------------------------------ */}

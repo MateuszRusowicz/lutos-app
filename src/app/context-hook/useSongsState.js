@@ -18,10 +18,13 @@ export const useSongsState = () => {
 export const SongsContextProvider = ({ children }) => {
   const [songs, setSongs] = useState([]); // w zasadzie to nigdzie nie używam setSongs bo idą bezpośrednio z DB i używam fetch songs, ale chyba potrzebuję to use State, co?
   const [authState, setAuthState] = useState(["authenticated", 1]); //zawsze zalogowany użytkownik tylko do testów, normalnie powinno być "unanthenticated"
+  const [musicians, setMusicians] = useState([]);
 
   const fetchSongs = useCallback(async function () {
     try {
-      const res = await axios.get("/api/songs", { params: { userId: 1 } });
+      const res = await axios.get("/api/compositions", {
+        params: { userId: 1 },
+      });
       setSongs(res.data);
     } catch (err) {
       console.log(err);
@@ -31,6 +34,19 @@ export const SongsContextProvider = ({ children }) => {
   useEffect(() => {
     fetchSongs();
   }, [fetchSongs]);
+
+  const fetchMusicians = useCallback(async function () {
+    try {
+      const res = await axios.get("/api/musicians");
+      setMusicians(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMusicians();
+  }, [fetchMusicians]);
 
   // DO TESTÓW INNA FUNKCJA
   // const fetchSongs = useCallback(
@@ -54,7 +70,15 @@ export const SongsContextProvider = ({ children }) => {
 
   return (
     <SongsContext.Provider
-      value={{ songs, setSongs, fetchSongs, authState, setAuthState }}
+      value={{
+        songs,
+        setSongs,
+        fetchSongs,
+        authState,
+        setAuthState,
+        fetchMusicians,
+        musicians,
+      }}
     >
       {children}
     </SongsContext.Provider>

@@ -12,7 +12,12 @@ const dbSetup = async function () {
   );
   create table if not exists musicians(
     id integer primary key,
-    name varchar(100) unique not null
+    first_name varchar(100) not null,
+    last_name varchar(100) not null,
+    instrument varchar(100),
+    user_id integer not null,
+    foreign key (user_id) references users(id),
+    unique(first_name,last_name)
   );
   create table if not exists compositions_musicians(
     composition_id integer,
