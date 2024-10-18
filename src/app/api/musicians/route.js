@@ -20,7 +20,7 @@ export async function GET(req) {
   const db = await openDb();
   const userId = 1; //tutaj coś jest źle, powinno być req.query.userId ale to też nie działa...
   const musicians = await db.all(
-    "select id, group_concat(first_name || ' ' || last_name) as fullName, instrument from musicians where user_id =?",
+    "select id, concat(first_name,' ', last_name) as fullName, instrument from musicians where user_id =?",
     [userId]
   );
 

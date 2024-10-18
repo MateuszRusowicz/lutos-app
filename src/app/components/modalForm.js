@@ -40,20 +40,12 @@ export default function ModalForm({ open, close, formContent }) {
 
   const submitComposition = async function (e) {
     e.preventDefault();
-    const musiciansArr = musiciansData
-      .toLowerCase()
-      .trim()
-      .split(",")
-      .filter((m) => m !== "");
 
     //add render spinner
-
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/compositions", {
-        title,
-        composer,
-        musicians: musiciansArr,
+        ...compositionData,
         userId: authState[1],
       });
       setProcessModal({
@@ -86,7 +78,7 @@ export default function ModalForm({ open, close, formContent }) {
     });
     setMusiciansData({
       firstName: "",
-      secondName: "",
+      lastName: "",
       instrument: "",
     });
   };

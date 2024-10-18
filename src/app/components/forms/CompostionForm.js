@@ -19,14 +19,14 @@ export default function CompositionForm({
               <li key={k}>
                 <label htmlFor={k}>musicians</label>
                 <select
-                  name={k}
+                  name="musiciansID[]"
                   id={k}
-                  value={state[k]}
+                  // value={state[k]}
                   multiple
                   onChange={(e) =>
                     stateUpdate({
                       ...state,
-                      [k]: Array.from(
+                      musiciansId: Array.from(
                         e.target.selectedOptions,
                         (option) => option.value
                       ),
@@ -34,7 +34,7 @@ export default function CompositionForm({
                   }
                 >
                   {musicians.map((el) => (
-                    <option key={el.fullName} value={el.fullName}>
+                    <option key={el.fullName} value={el.id}>
                       {el.fullName}
                     </option>
                   ))}
