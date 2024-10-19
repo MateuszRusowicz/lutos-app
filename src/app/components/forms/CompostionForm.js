@@ -16,12 +16,12 @@ export default function CompositionForm({
         {Object.keys(state).map((k) => {
           if (k === "musiciansId") {
             return (
+              // NEED TO BE REBUILT: MAP OF SEARCHABLE BUTTONS THAT ADD ID TO ARRAY UPON BEING CLICKED
               <li key={k}>
                 <label htmlFor={k}>musicians</label>
                 <select
                   name="musiciansID[]"
                   id={k}
-                  // value={state[k]}
                   multiple
                   onChange={(e) =>
                     stateUpdate({
