@@ -13,6 +13,7 @@ export default function CompositionForm({
     <form onSubmit={handleSubmit}>
       <h2 className={styles.title}>Insert new {formContent}</h2>
       <ul className={styles.formGroup}>
+        {/* MORE A SERIES OF BUTTONS NEEDED THAT PUSH ID TO ARRAY OR STH */}
         {Object.keys(state).map((k) => {
           if (k === "musiciansId") {
             return (
