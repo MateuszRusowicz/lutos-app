@@ -1,5 +1,6 @@
 import styles from "./CompositionForm.module.css";
 import { useSongsState } from "../../context-hook/useSongsState";
+import { Select } from "antd";
 
 export default function CompositionForm({
   handleSubmit,
@@ -18,7 +19,17 @@ export default function CompositionForm({
           if (k === "musiciansId") {
             return (
               <li key={k}>
-                <label htmlFor={k}>musicians</label>
+                <Select
+                  style={{ width: "100%" }}
+                  showSearch
+                  mode="multiple"
+                  optionFilterProp="label"
+                  options={musicians.map((m) => ({
+                    value: m.id,
+                    label: m.fullName,
+                  }))}
+                />
+                {/* <label htmlFor={k}>musicians</label>
                 <select
                   name="musiciansID[]"
                   id={k}
@@ -33,13 +44,13 @@ export default function CompositionForm({
                       ),
                     })
                   }
-                >
-                  {musicians.map((el) => (
+                > */}
+                {/* {musicians.map((el) => (
                     <option key={el.fullName} value={el.id}>
                       {el.fullName}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </li>
             );
           } else {
