@@ -1,82 +1,75 @@
 import styles from "./CompositionForm.module.css";
 import { useSongsState } from "../../context-hook/useSongsState";
-import { Select } from "antd";
+import { Form, Input, Select, Button } from "antd";
 
-export default function CompositionForm({
+export default function TestForm({
   handleSubmit,
   formContent,
-  state,
   stateUpdate,
+  state,
 }) {
   const { musicians } = useSongsState();
 
+  const formatted = (input) => {
+    const words = input.toLowerCase().split(" ");
+    if (words.length === 1) {
+      return words;
+    } else {
+      return words[0] + words[1].charAt(0).toUpperCase() + words[1].slice(1);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h2 className={styles.title}>Insert new {formContent}</h2>
-      <ul className={styles.formGroup}>
-        {/* MORE A SERIES OF BUTTONS NEEDED THAT PUSH ID TO ARRAY OR STH */}
-        {Object.keys(state).map((k) => {
-          if (k === "musiciansId") {
-            return (
-              <li key={k}>
-                <Select
-                  style={{ width: "100%" }}
-                  showSearch
-                  mode="multiple"
-                  optionFilterProp="label"
-                  options={musicians.map((m) => ({
-                    value: m.id,
-                    label: m.fullName,
-                  }))}
-                />
-                {/* <label htmlFor={k}>musicians</label>
-                <select
-                  name="musiciansID[]"
-                  id={k}
-                  // value={state[k]}
-                  multiple
-                  onChange={(e) =>
-                    stateUpdate({
-                      ...state,
-                      musiciansId: Array.from(
-                        e.target.selectedOptions,
-                        (option) => option.value
-                      ),
-                    })
-                  }
-                > */}
-                {/* {musicians.map((el) => (
-                    <option key={el.fullName} value={el.id}>
-                      {el.fullName}
-                    </option>
-                  ))}
-                </select> */}
-              </li>
-            );
-          } else {
-            return (
-              <li key={k}>
-                <label htmlFor={k}>{k}</label>
-                <input
-                  value={state[k]}
-                  onChange={(e) =>
-                    stateUpdate({ ...state, [k]: e.target.value })
-                  }
-                  type="text"
-                  id={k}
-                  name={k}
-                  required
-                />
-              </li>
-            );
-          }
-        })}
-      </ul>
+    <Form
+      onFinish={(values) => {
+        handleSubmit(values);
+      }}
+      layout="vertical"
+      className={styles.formGroup}
+    >
+      <h2 className={styles.title}>Insert new {formContent.name}</h2>
+
+      {formContent.fields.map((k) => {
+        return k !== "musicians" ? (
+          <Form.Item
+            key={k}
+            label={k}
+            name={formatted(k)}
+            className={styles.formGroup}
+          >
+            <Input style={{ width: "100%" }} />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            key={k}
+            label={k}
+            name="musiciansId"
+            className={styles.formGroup}
+          >
+            <Select
+              showSearch
+              style={{ width: "100%" }}
+              mode="multiple"
+              optionFilterProp="label"
+              options={musicians.map((m) => ({
+                value: m.id,
+                label: m.fullName,
+              }))}
+            />
+          </Form.Item>
+        );
+      })}
+
       <div className={styles.buttonGroup}>
-        <button type="submit" className={styles.submitButton}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className={styles.submitButton}
+        >
           Submit
-        </button>
+        </Button>
+        <Button className={styles.closeButton}>Cancel</Button>
       </div>
-    </form>
+    </Form>
   );
 }

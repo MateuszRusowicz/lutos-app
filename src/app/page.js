@@ -11,14 +11,13 @@ import { ScheduleIcon, PlusIcon } from "../../public/images/svgs";
 import LoginComponent from "./components/LoginComponent";
 import { UserOutlined } from "@ant-design/icons";
 import ModalForm from "./components/modalForm";
-import TestForm from "./components/forms/testForm";
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const { songs, fetchSongs, authState, setAuthState, fetchMusicians } =
     useSongsState();
   const asideScrollRef = useRef(null);
-  const [formContent, setFormContent] = useState();
+  const [formContent, setFormContent] = useState({ name: "", fields: [] });
   const [isRendered, setIsRendered] = useState(false);
   useEffect(() => {
     setIsRendered(true);
@@ -83,7 +82,6 @@ export default function Home() {
             />
             <p>music management tool of new generation</p>
           </div>
-          <TestForm />
 
           {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
           {isRendered && (
@@ -99,7 +97,10 @@ export default function Home() {
           <div className={styles.grid}>
             <button
               onClick={() => {
-                setFormContent("composition");
+                setFormContent({
+                  name: "composition",
+                  fields: ["composer", "title", "musicians"],
+                });
                 setOpenModal(true);
               }}
               className={styles.card}
@@ -111,7 +112,10 @@ export default function Home() {
 
             <button
               onClick={() => {
-                setFormContent("musicians");
+                setFormContent({
+                  name: "musicians",
+                  fields: ["first name", "last name", "instrument"],
+                });
                 setOpenModal(true);
               }}
               className={styles.card}

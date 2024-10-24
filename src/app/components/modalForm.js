@@ -13,17 +13,17 @@ import CompositionForm from "./forms/CompostionForm";
 
 export default function ModalForm({ open, close, formContent }) {
   //state for each input and custom hook from context api
-  const [compositionData, setCompositionData] = useState({
-    composer: "",
-    title: "",
-    musiciansId: [],
-  });
-  const [musiciansData, setMusiciansData] = useState({
-    firstName: "",
-    lastName: "",
-    instrument: "",
-  });
-  const { fetchSongs, authState } = useSongsState();
+  // const [compositionData, setCompositionData] = useState({
+  //   composer: "",
+  //   title: "",
+  //   musiciansId: [],
+  // });
+  // const [musiciansData, setMusiciansData] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   instrument: "",
+  // });
+  const { fetchSongs, authState, fetchMusicians } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
     status: null,
@@ -38,14 +38,12 @@ export default function ModalForm({ open, close, formContent }) {
 
   // ------------------HANDLERS---------------------------------------
 
-  const submitComposition = async function (e) {
-    e.preventDefault();
-
+  const submitComposition = async function (values) {
     //add render spinner
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/compositions", {
-        ...compositionData,
+        ...values,
         userId: authState[1],
       });
       setProcessModal({
@@ -68,33 +66,22 @@ export default function ModalForm({ open, close, formContent }) {
         3000
       );
     }
-    //fetch songs i reset input state
+    //fetch songs
     close();
     fetchSongs();
-    setCompositionData({
-      composer: "",
-      title: "",
-      musiciansId: "",
-    });
-    setMusiciansData({
-      firstName: "",
-      lastName: "",
-      instrument: "",
-    });
   };
 
-  const submitMusician = async function (e) {
-    e.preventDefault();
-
-    const formattedFirstName = musiciansData.firstName.toLowerCase().trim();
-    const formattedLastName = musiciansData.lastName.toLowerCase().trim();
+  const submitMusician = async function (values) {
+    console.log(values);
+    const formattedFirstName = values.firstName.toLowerCase().trim();
+    const formattedLastName = values.lastName.toLowerCase().trim();
 
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/musicians", {
         firstName: formattedFirstName,
         lastName: formattedLastName,
-        instrument: musiciansData.instrument,
+        instrument: values.instrument,
         userId: authState[1],
       });
       setProcessModal({
@@ -117,9 +104,12 @@ export default function ModalForm({ open, close, formContent }) {
         3000
       );
     }
+
+    fetchMusicians();
+    close();
   };
   const handleSubmit =
-    formContent === "composition" ? submitComposition : submitMusician;
+    formContent.name === "composition" ? submitComposition : submitMusician;
 
   // -----------------------------RENDERING THE MODAL FORM
   return (
@@ -136,14 +126,6 @@ export default function ModalForm({ open, close, formContent }) {
           <CompositionForm
             formContent={formContent}
             handleSubmit={handleSubmit}
-            state={
-              formContent === "composition" ? compositionData : musiciansData
-            }
-            stateUpdate={
-              formContent === "composition"
-                ? setCompositionData
-                : setMusiciansData
-            }
           />
         </Modal>
       )}

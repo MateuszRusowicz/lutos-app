@@ -1,32 +1,32 @@
 .title {
   margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
 }
 
 .formGroup {
   list-style-type: none;
-}
-
-.formGroup li {
-  margin-bottom: 1rem;
+  padding: 0;
+  margin-bottom: 1.5rem;
 }
 
 .formGroup label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  color: white;
 }
 
 .formGroup input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid rgba(var(--card-border-rgb), 0.5);
   border-radius: var(--border-radius);
 }
 
 .formGroup select {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid rgba(var(--card-border-rgb), 0.5);
   border-radius: var(--border-radius);
 }
 
@@ -34,6 +34,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .buttonGroup button {
@@ -55,4 +56,23 @@
 
 .buttonGroup button:hover {
   opacity: 0.8;
+}
+
+/* Specific to Ant Design form styles */
+.ant-form-item {
+  margin-bottom: 1rem;
+}
+
+.ant-form-item-label > label {
+  color: white;
+}
+
+.ant-btn-primary {
+  background-color: #0071ff;
+  border-color: #0071ff;
+}
+
+.ant-btn-primary:hover {
+  background-color: #005bb5;
+  border-color: #005bb5;
 }
