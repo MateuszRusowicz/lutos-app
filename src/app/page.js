@@ -11,6 +11,11 @@ import { ScheduleIcon, PlusIcon } from "../../public/images/svgs";
 import LoginComponent from "./components/LoginComponent";
 import { UserOutlined } from "@ant-design/icons";
 import ModalForm from "./components/modalForm";
+import LoginForm from "./components/forms/LoginForm";
+const loginFields = {
+  title: "Register",
+  inputFields: ["email", "password", "re-enter password", "auxiliary question"],
+};
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
@@ -82,6 +87,7 @@ export default function Home() {
             />
             <p>music management tool of new generation</p>
           </div>
+          <LoginForm fields={loginFields} />
 
           {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
           {isRendered && (

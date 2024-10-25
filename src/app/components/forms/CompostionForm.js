@@ -2,12 +2,7 @@ import styles from "./CompositionForm.module.css";
 import { useSongsState } from "../../context-hook/useSongsState";
 import { Form, Input, Select, Button } from "antd";
 
-export default function TestForm({
-  handleSubmit,
-  formContent,
-  stateUpdate,
-  state,
-}) {
+export default function TestForm({ handleSubmit, formContent }) {
   const { musicians } = useSongsState();
 
   const formatted = (input) => {
