@@ -12,17 +12,6 @@ import {
 import CompositionForm from "./forms/CompostionForm";
 
 export default function ModalForm({ open, close, formContent }) {
-  //state for each input and custom hook from context api
-  // const [compositionData, setCompositionData] = useState({
-  //   composer: "",
-  //   title: "",
-  //   musiciansId: [],
-  // });
-  // const [musiciansData, setMusiciansData] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   instrument: "",
-  // });
   const { fetchSongs, authState, fetchMusicians } = useSongsState();
   const [processModal, setProcessModal] = useState({
     open: false,
