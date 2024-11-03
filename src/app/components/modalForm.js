@@ -28,7 +28,7 @@ export default function ModalForm({ open, close, formContent }) {
   // ------------------HANDLERS---------------------------------------
 
   const submitComposition = async function (values) {
-    //add render spinner
+    //add spinner
     setProcessModal({ open: true, status: "waitingSpinner" });
     try {
       await axios.post("/api/compositions", {
@@ -100,7 +100,7 @@ export default function ModalForm({ open, close, formContent }) {
   const handleSubmit =
     formContent.name === "composition" ? submitComposition : submitMusician;
 
-  // -----------------------------RENDERING THE MODAL FORM
+  // -----------------------------RENDERING MODAL FORM
   return (
     <>
       {isRendered && (

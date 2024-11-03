@@ -46,7 +46,6 @@ export default function LoginComponent() {
   };
 
   // REGISTERING NEW USER FUNCTION
-
   const handleNewUser = async function (values) {
     if (values.password !== values.re - entered) {
       return alert("New Password must match re-entered New Password!");
