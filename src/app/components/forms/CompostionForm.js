@@ -2,7 +2,7 @@ import styles from "./CompositionForm.module.css";
 import { useSongsState } from "../../context-hook/useSongsState";
 import { Form, Input, Select, Button } from "antd";
 
-export default function TestForm({ handleSubmit, formContent }) {
+export default function CompositionForm({ handleSubmit, formContent,handleCloseModal }) {
   const { musicians } = useSongsState();
 
   const formatted = (input) => {
@@ -16,6 +16,7 @@ export default function TestForm({ handleSubmit, formContent }) {
 
   return (
     <Form
+    
       onFinish={(values) => {
         handleSubmit(values);
       }}
@@ -63,7 +64,7 @@ export default function TestForm({ handleSubmit, formContent }) {
         >
           Submit
         </Button>
-        <Button className={styles.closeButton}>Cancel</Button>
+        <Button className={styles.closeButton} onClick={handleCloseModal}>Cancel</Button>
       </div>
     </Form>
   );

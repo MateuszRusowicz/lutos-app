@@ -19,7 +19,7 @@ const loginFields = {
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
-  const { songs, fetchSongs, authState, setAuthState, fetchMusicians } =
+  const { songs, fetchSongs, authState, setAuthState,} =
     useSongsState();
   const asideScrollRef = useRef(null);
   const [formContent, setFormContent] = useState({ name: "", fields: [] });
@@ -35,6 +35,7 @@ export default function Home() {
     }
   }, [authState, fetchSongs]);
 
+
   // -------------------------HANDLING DELETE SONG FROM DB / LOGOUT USER ----------------------------
   const handleDeleteSong = async function (id) {
     const isConfirmed = confirm(
@@ -45,7 +46,7 @@ export default function Home() {
     }
 
     try {
-      const deletedSong = await axios.delete("/api/songs", { data: { id } });
+      const deletedSong = await axios.delete("/api/compositions", { data: { id } });
       if (deletedSong.status === 200) fetchSongs();
       return console.log("deleted", deletedSong.data); //-------------------DODAJ ERROR HANDLING PRZY USUWANIU PIOSENKI
     } catch (err) {

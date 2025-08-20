@@ -115,6 +115,9 @@ export default function ModalForm({ open, close, formContent }) {
           <CompositionForm
             formContent={formContent}
             handleSubmit={handleSubmit}
+            handleCloseModal={()=>{
+              close()
+            }}
           />
         </Modal>
       )}
