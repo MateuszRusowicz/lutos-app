@@ -87,7 +87,7 @@ export default function Home() {
             />
             <p>music management tool of new generation</p>
           </div>
-          <LoginForm fields={loginFields} />
+          {/* <LoginForm fields={loginFields} /> */}
 
           {/* --------------- Modal Form to Add songs, originally hidden  -------------------*/}
           {isRendered && (
