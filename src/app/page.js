@@ -46,7 +46,7 @@ export default function Home() {
     }
 
     try {
-      const deletedSong = await axios.delete("/api/compositions", { data: { id } });
+      const deletedSong = await axios.delete(`/api/compositions/${id}`);
       if (deletedSong.status === 200) fetchSongs();
       return console.log("deleted", deletedSong.data); //-------------------DODAJ ERROR HANDLING PRZY USUWANIU PIOSENKI
     } catch (err) {

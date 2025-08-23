@@ -34,17 +34,3 @@ export async function GET(req) {
   return NextResponse.json(songs);
 }
 
-export async function DELETE(req) {
-  const db = await openDb();
-  const { id } = await req.json();
-
-  await db.run("delete from compositions where id = ?", [id]);
-  await db.run("delete from compositions_musicians where composition_id = ?", [
-    id,
-  ]);
-
-  return NextResponse.json(
-    { message: "db delete successful" },
-    { status: 200 }
-  );
-}
